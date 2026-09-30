@@ -9,7 +9,6 @@
 body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #eef2f7; color: #2c3e50; }
 .hidden { display: none !important; }
 
-/* LOGIN */
 .login-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #4b6cb7, #182848); padding: 16px; }
 .login-box { background: white; padding: 36px; border-radius: 12px; width: 100%; max-width: 420px; box-shadow: 0 12px 40px rgba(0,0,0,.3); }
 .login-box h1 { font-size: 20px; margin-bottom: 4px; text-align: center; }
@@ -17,7 +16,7 @@ body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #eef2f7; color: 
 .logo-login { display: block; margin: 0 auto 16px; height: 110px; width: auto; object-fit: contain; }
 .form-group { margin-bottom: 14px; }
 .form-group label { display: block; font-size: 13px; margin-bottom: 4px; font-weight: 600; }
-.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 9px 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; font-family: inherit; }
+.form-group input, .form-group select { width: 100%; padding: 9px 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; }
 .form-group input:focus, .form-group select:focus { outline: 2px solid #4b6cb7; border-color: transparent; }
 .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 14px; }
 
@@ -34,14 +33,12 @@ body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #eef2f7; color: 
 .error { color: #e74c3c; font-size: 13px; margin-top: 10px; text-align: center; }
 .hint { margin-top: 16px; text-align: center; color: #95a5a6; font-size: 12px; line-height: 1.6; }
 
-/* TOPBAR */
 .topbar { background: #182848; color: white; padding: 8px 20px; display: flex; justify-content: space-between; align-items: center; min-height: 70px; flex-wrap: wrap; gap: 10px; }
 .topbar-left { display: flex; align-items: center; gap: 12px; }
 .topbar-left h2 { font-size: 15px; margin: 0; }
 .logo { height: 50px; width: auto; object-fit: contain; display: block; }
 .user-info { display: flex; align-items: center; gap: 12px; font-size: 13px; flex-wrap: wrap; }
 
-/* TABS */
 .tabs { display: flex; gap: 4px; background: #fff; padding: 8px 16px; border-bottom: 1px solid #dce1e8; flex-wrap: wrap; }
 .tab { padding: 8px 14px; border: none; background: transparent; cursor: pointer; border-radius: 6px; font-size: 13px; font-weight: 500; color: #4a5568; }
 .tab:hover { background: #eef2f7; }
@@ -53,7 +50,6 @@ main { padding: 20px; max-width: 1400px; margin: 0 auto; }
 h3 { margin-bottom: 14px; color: #182848; font-size: 18px; }
 h4 { margin-bottom: 10px; font-size: 15px; }
 
-/* CARDS */
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px; }
 .card { background: white; border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.06); border-left: 5px solid #4b6cb7; }
 .card h4 { font-size: 11px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 6px; font-weight: 600; }
@@ -65,7 +61,6 @@ h4 { margin-bottom: 10px; font-size: 15px; }
 
 .form-card { background: white; padding: 18px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.05); margin-bottom: 18px; }
 
-/* TABLAS */
 .data-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.06); font-size: 12.5px; margin-bottom: 18px; }
 .data-table th, .data-table td { padding: 7px 9px; text-align: left; border-bottom: 1px solid #eef2f7; }
 .data-table th { background: #f7f9fc; font-weight: 600; font-size: 11px; text-transform: uppercase; color: #4a5568; }
@@ -87,9 +82,9 @@ h4 { margin-bottom: 10px; font-size: 15px; }
 
 .info { background: #e7f3ff; color: #0c5460; padding: 12px 14px; border-radius: 6px; margin-bottom: 14px; font-size: 13px; }
 .info.ahorro { background: #f4ecf7; color: #6c3483; border-left: 4px solid #8e44ad; }
+.info.nube { background: #e8f8f5; color: #0e6251; border-left: 4px solid #27ae60; font-size: 12px; }
 .total-line { font-size: 13px; margin-top: 10px; padding: 12px; background: #f7f9fc; border-radius: 6px; }
 
-/* FONDOS */
 .fondos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 20px; }
 .fondo-card { background: white; padding: 16px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.06); border-top: 4px solid #4b6cb7; cursor: pointer; transition: transform .15s; }
 .fondo-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.1); }
@@ -123,6 +118,13 @@ h4 { margin-bottom: 10px; font-size: 15px; }
   .close, .modal-content button { display: none; }
 }
 </style>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  window.__firebase = { initializeApp, getFirestore, doc, setDoc, onSnapshot };
+</script>
 </head>
 <body>
 
@@ -142,13 +144,6 @@ h4 { margin-bottom: 10px; font-size: 15px; }
     </div>
     <button class="btn-primary" id="btnLogin" style="width:100%;">Ingresar</button>
     <p id="loginError" class="error"></p>
-    <div class="hint">
-      <b>Usuarios iniciales:</b><br>
-      pastor / pastor1201<br>
-      tesorero / tesorero1202<br>
-      misiones / misiones1204<br>
-      damas / damas1205
-    </div>
   </div>
 </div>
 
@@ -161,6 +156,7 @@ h4 { margin-bottom: 10px; font-size: 15px; }
     </div>
     <div class="user-info">
       <span id="currentUserLabel"></span>
+      <span id="cloudStatus" style="font-size:11px; opacity:.7;"></span>
       <button class="btn-logout" id="btnLogout">Cerrar sesión</button>
     </div>
   </header>
@@ -175,20 +171,16 @@ h4 { margin-bottom: 10px; font-size: 15px; }
 
   <main>
 
-    <!-- PANEL -->
     <section id="tab-dashboard" class="tab-content active">
       <h3>Panel General</h3>
       <div class="cards" id="summaryCards"></div>
-
       <h3>Fondos de la Iglesia</h3>
-      <p class="info">Cada tarjeta muestra el saldo actual del fondo. Los saldos se calculan automáticamente sumando las entradas y restando las salidas del Libro General.</p>
+      <p class="info">Cada tarjeta muestra el saldo actual del fondo. Los saldos se calculan automáticamente desde el Libro General.</p>
       <div id="fondosGrid" class="fondos-grid"></div>
-
       <h3>Detalle de Fondo Seleccionado</h3>
       <div id="detalleFondo"></div>
     </section>
 
-    <!-- LIBRO GENERAL -->
     <section id="tab-libro" class="tab-content">
       <h3>Libro General Principal</h3>
       <p class="info">Todos los movimientos de la iglesia. Cada movimiento pertenece a un fondo/comité.</p>
@@ -197,10 +189,7 @@ h4 { margin-bottom: 10px; font-size: 15px; }
         <h4>Registrar Movimiento</h4>
         <div class="form-grid">
           <div class="form-group"><label>Fecha</label><input type="date" id="movFecha"></div>
-          <div class="form-group">
-            <label>Fondo / Comité</label>
-            <select id="movFondo"></select>
-          </div>
+          <div class="form-group"><label>Fondo / Comité</label><select id="movFondo"></select></div>
           <div class="form-group"><label>Concepto</label><input type="text" id="movConcepto" placeholder="Descripción"></div>
           <div class="form-group"><label>Tipo</label>
             <select id="movTipo">
@@ -246,12 +235,11 @@ h4 { margin-bottom: 10px; font-size: 15px; }
       <p id="totalesLibro" class="total-line"></p>
     </section>
 
-    <!-- DIEZMOS -->
     <section id="tab-diezmos" class="tab-content">
       <h3>Diezmos</h3>
       <p class="info">
-        <b>Descuentos automáticos:</b> Diezmo de Diezmos 10%, Asomipel 6%, Ahorro Pastor 30% (Pastor puede modificarlo), Fondo Nacional y Fondo Local editables (por defecto 5%).
-        Al cerrar el mes, todo se ingresa al Libro General automáticamente.
+        <b>Descuentos:</b> Diezmo de Diezmos 10%, Asomipel 6%, Ahorro Pastor 30% (Pastor puede modificarlo),
+        Fondo Nacional y Fondo Local editables (por defecto 5%). Al cerrar el mes se ingresa todo al Libro General.
       </p>
 
       <div class="form-card">
@@ -279,9 +267,8 @@ h4 { margin-bottom: 10px; font-size: 15px; }
         <button class="btn-print" onclick="imprimirDiezmos()">🖨️ Imprimir</button>
       </div>
 
-      <h4>Diezmos del Mes</h4>
+      <h4>Cierre mensual</h4>
       <div class="export-bar">
-        <b>Cierre mensual:</b>
         <select id="cierreMes"></select>
         <select id="cierreAnio"></select>
         <button class="btn-primary" id="btnCierre">Ejecutar cierre</button>
@@ -303,12 +290,11 @@ h4 { margin-bottom: 10px; font-size: 15px; }
       <p id="totalDiezmosPendientes" class="total-line"></p>
     </section>
 
-    <!-- AHORRO PASTOR -->
     <section id="tab-ahorro" class="tab-content">
       <h3>💼 Ahorro Pastor</h3>
       <p class="info ahorro">
         <b>Fondo privado del Pastor.</b> Solo el Pastor (Administrador) tiene acceso a esta sección.
-        El Ahorro Pastor se alimenta automáticamente de los diezmos cerrados y permite registrar egresos personales.
+        Se alimenta automáticamente del cierre de diezmos y permite registrar egresos personales.
       </p>
 
       <div class="cards">
@@ -346,7 +332,6 @@ h4 { margin-bottom: 10px; font-size: 15px; }
       </div>
     </section>
 
-    <!-- USUARIOS -->
     <section id="tab-usuarios" class="tab-content">
       <h3>Gestión de Usuarios</h3>
       <div id="usuariosSoloAdmin">
@@ -377,7 +362,6 @@ h4 { margin-bottom: 10px; font-size: 15px; }
   </main>
 </div>
 
-<!-- MODAL RECIBO -->
 <div id="reciboModal" class="modal hidden">
   <div class="modal-content">
     <span class="close" id="btnCerrarRecibo">&times;</span>
@@ -388,62 +372,136 @@ h4 { margin-bottom: 10px; font-size: 15px; }
 
 <script>
 /* ============================================================
-   CONTABILIDAD IGLESIA - v4 (estructura real por fondos)
+   CONTABILIDAD IGLESIA - v4 con Firebase
    ============================================================ */
 
 var DB_KEY = 'iglesia_contabilidad_v4';
+var FIREBASE_COLLECTION = 'iglesia';
+var FIREBASE_DOC = 'contabilidad';
 var DURACION_EDICION_MS = 2 * 60 * 60 * 1000;
 var session = null;
 
-/* Lista de fondos/comités de la iglesia */
 var FONDOS_DEFECTO = [
-  'Diáconos',
-  'Misiones',
-  'Damas',
-  'Evangelismo',
-  'Jóvenes',
-  'Obra Social',
-  'Escuela Dominical',
-  'Alabanza',
-  'Caballeros',
-  'Audiovisuales',
-  'Piso Iglesia',
-  'Intersección',
-  'Nueva Obra',
-  'Sonido',
-  'fondo pastoral',
-  'Diezmos',
-  'Fondo General'
+  'Diáconos','Misiones','Damas','Evangelismo','Jóvenes','Obra Social',
+  'Escuela Dominical','Alabanza','Caballeros','Audiovisuales','Piso Iglesia',
+  'Intersección','Nueva Obra','Fondo Pastor','Sonido','Diezmos','Fondo General'
 ];
 
-/* ============ DB ============ */
+/* ============ FIREBASE ============ */
+var firebaseConfig = {
+  apiKey: "AIzaSyC7ypZQEv7yw3iKxiwv8XiFAv6R_NSNYRM",
+  authDomain: "contabilidad-iglesia-liberia.firebaseapp.com",
+  projectId: "contabilidad-iglesia-liberia",
+  storageBucket: "contabilidad-iglesia-liberia.firebasestorage.app",
+  messagingSenderId: "1029610472038",
+  appId: "1:1029610472038:web:aad57111fd258a4fa723a7",
+  measurementId: "G-9H54WW99LV"
+};
+
+var fbApp = null, fbDB = null, fbDocRef = null, fbUnsubscribe = null;
+var fbListo = false;
+var fbSincronizando = false;
+var ultimoTimestampLocal = 0;
+
+function initFirebase() {
+  if (fbListo) return;
+  if (!window.__firebase) { setTimeout(initFirebase, 500); return; }
+  try {
+    fbApp = window.__firebase.initializeApp(firebaseConfig);
+    fbDB = window.__firebase.getFirestore(fbApp);
+    fbDocRef = window.__firebase.doc(fbDB, FIREBASE_COLLECTION, FIREBASE_DOC);
+    fbListo = true;
+    console.log('🔥 Firebase conectado');
+    actualizarEstadoNube('☁️ Conectado');
+  } catch(e) {
+    console.error('❌ Error Firebase:', e);
+    actualizarEstadoNube('⚠️ Sin conexión');
+  }
+}
+
+function actualizarEstadoNube(txt) {
+  var el = document.getElementById('cloudStatus');
+  if (el) el.textContent = txt;
+}
+
+function saveDB(d) {
+  ultimoTimestampLocal = Date.now();
+  localStorage.setItem(DB_KEY, JSON.stringify(d));
+  // Sync con Firestore
+  if (fbListo && fbDocRef) {
+    fbSincronizando = true;
+    actualizarEstadoNube('⬆️ Guardando...');
+    window.__firebase.setDoc(fbDocRef, d)
+      .then(function(){
+        fbSincronizando = false;
+        actualizarEstadoNube('☁️ Guardado');
+        console.log('☁️ Sincronizado con la nube');
+      })
+      .catch(function(e){
+        fbSincronizando = false;
+        actualizarEstadoNube('⚠️ Error al guardar');
+        console.error('❌ Error sync:', e);
+      });
+  } else {
+    console.warn('Firebase no listo, guardado solo local');
+  }
+}
+
+function escucharFirestore() {
+  if (!fbListo || !fbDocRef) { setTimeout(escucharFirestore, 800); return; }
+  if (fbUnsubscribe) fbUnsubscribe();
+  fbUnsubscribe = window.__firebase.onSnapshot(fbDocRef, function(snap){
+    // Si acabamos de guardar hace menos de 2 seg, ignorar
+    if (Date.now() - ultimoTimestampLocal < 2000) return;
+
+    if (!snap.exists()) {
+      var local = loadDB();
+      if (local) {
+        window.__firebase.setDoc(fbDocRef, local);
+        console.log('📤 Datos locales enviados a la nube');
+      }
+      return;
+    }
+    var cloudData = snap.data();
+    var localData = loadDB();
+
+    var totalCloud = (cloudData.libro||[]).length + (cloudData.diezmos||[]).length + (cloudData.ahorro||[]).length;
+    var totalLocal = localData ? ((localData.libro||[]).length + (localData.diezmos||[]).length + (localData.ahorro||[]).length) : -1;
+
+    if (totalCloud !== totalLocal || !localData) {
+      localStorage.setItem(DB_KEY, JSON.stringify(cloudData));
+      console.log('🔄 Datos actualizados desde la nube');
+      actualizarEstadoNube('🔄 Actualizado');
+      if (session) renderTodo();
+    }
+  }, function(err){
+    console.error('❌ Error escuchando:', err);
+  });
+}
+
+/* ============ DB LOCAL ============ */
 function loadDB() {
   var raw = localStorage.getItem(DB_KEY);
   return raw ? JSON.parse(raw) : null;
 }
-function saveDB(d) { localStorage.setItem(DB_KEY, JSON.stringify(d)); }
 
 function initDB() {
   if (localStorage.getItem(DB_KEY)) return;
-  saveDB({
+  var inicial = {
     usuarios: [
       { user: 'pastor', pass: 'pastor1201', rol: 'admin', comite: null },
       { user: 'tesorero', pass: 'tesorero1202', rol: 'tesorero_general', comite: null },
+      { user: 'diaconos', pass: 'diaconos1203', rol: 'tesorero_general', comite: null },
       { user: 'misiones', pass: 'misiones1204', rol: 'tesorero_comite', comite: 'Misiones' },
-      { user: 'damas', pass: 'damas1205', rol: 'tesorero_comite', comite: 'Damas' }
+      { user: 'damas', pass: '1205', rol: 'tesorero_comite', comite: 'Damas' }
     ],
-    libro: [],      // {id, numero, fecha, concepto, fondo, tipo, monto, usuario, creadoEn}
-    diezmos: [],    // {id, numero, fecha, concepto, monto, descuentos, estado, usuario, creadoEn}
-    ahorro: [],     // movimientos del ahorro pastor: {id, numero, fecha, concepto, tipo, monto, usuario, creadoEn}
-    cierres: [],
-    recibos: 0
-  });
+    libro: [], diezmos: [], ahorro: [], cierres: [], recibos: 0
+  };
+  localStorage.setItem(DB_KEY, JSON.stringify(inicial));
 }
 
 /* ============ UTILIDADES ============ */
-function formatoMoneda(n) {
-  return '₡' + Math.round(Number(n) || 0).toLocaleString('es-CR');
-}
+function formatoMoneda(n) { return '₡' + Math.round(Number(n) || 0).toLocaleString('es-CR'); }
 function hoyISO() { return new Date().toISOString().slice(0,10); }
 
 /* ============ LOGIN ============ */
@@ -463,44 +521,45 @@ function login() {
   document.getElementById('currentUserLabel').textContent =
     u.user + ' (' + rolLabel[u.rol] + (u.comite ? ' - ' + u.comite : '') + ')';
 
-  var esComite = (u.rol === 'tesorero_comite');
-  var esPastor = (u.rol === 'admin');
+  var esC = (u.rol === 'tesorero_comite');
+  var esP = (u.rol === 'admin');
 
-  // Tabs prohibidas para comité
-  ['dashboard', 'libro', 'diezmos', 'ahorro', 'usuarios'].forEach(function(name){
+  ['dashboard','libro','diezmos','ahorro','usuarios'].forEach(function(name){
     var tab = document.querySelector('.tab[data-tab="' + name + '"]');
     if (!tab) return;
-    if (esComite) tab.style.display = 'none';
-    else tab.style.display = 'inline-block';
+    tab.style.display = esC ? 'none' : 'inline-block';
   });
-  // Ahorro solo Pastor
-  document.getElementById('tabAhorroBtn').style.display = esPastor ? 'inline-block' : 'none';
-  // Usuarios solo Pastor
-  var usuariosTab = document.querySelector('.tab[data-tab="usuarios"]');
-  if (usuariosTab) usuariosTab.style.display = esPastor ? 'inline-block' : 'none';
-  // Comité → solo su fondo, ir directo a Libro
-  if (esComite) {
+  document.getElementById('tabAhorroBtn').style.display = esP ? 'inline-block' : 'none';
+  var uTab = document.querySelector('.tab[data-tab="usuarios"]');
+  if (uTab) uTab.style.display = esP ? 'inline-block' : 'none';
+
+  if (esC) {
     document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
     document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
     document.querySelector('.tab[data-tab="libro"]').classList.add('active');
     document.getElementById('tab-libro').classList.add('active');
   }
-  // Mostrar campo Ahorro Pastor solo Pastor
-  document.getElementById('grupoPctAhorro').style.display = esPastor ? 'block' : 'none';
 
-  // Fechas por defecto
+  document.getElementById('grupoPctAhorro').style.display = esP ? 'block' : 'none';
+
   ['movFecha','diezmoFecha','ahorroFecha'].forEach(function(id){
     var el = document.getElementById(id);
     if (el) el.value = hoyISO();
   });
 
-  // Llenar selects de fondos
   llenarSelectsFondos();
+
+  // Suscribirse a la nube
+  if (fbListo && fbDocRef) {
+    window.__firebase.setDoc(fbDocRef, db).catch(function(e){ console.warn(e); });
+    escucharFirestore();
+  }
 
   renderTodo();
 }
 
 function logout() {
+  if (fbUnsubscribe) { fbUnsubscribe(); fbUnsubscribe = null; }
   session = null;
   document.getElementById('loginScreen').classList.remove('hidden');
   document.getElementById('appScreen').classList.add('hidden');
@@ -522,7 +581,6 @@ function fondosVisibles() {
   if (esComite()) return [session.comite];
   return [];
 }
-
 function puedeMoverFondo(fondo) {
   if (!session) return false;
   if (esPastor() || esTesoreroGeneral()) return true;
@@ -532,10 +590,7 @@ function puedeMoverFondo(fondo) {
 /* ============ NAVEGACIÓN ============ */
 function switchTab(name) {
   if (!session) return;
-  if (esComite() && ['diezmos', 'ahorro', 'usuarios'].indexOf(name) !== -1) {
-    alert('No tienes acceso a esta sección.');
-    return;
-  }
+  if (esComite() && ['diezmos','ahorro','usuarios'].indexOf(name) !== -1) { alert('Sin acceso.'); return; }
   if (name === 'ahorro' && !puedeVerAhorro()) { alert('Solo el Pastor.'); return; }
   if (name === 'usuarios' && !esPastor()) { alert('Solo el Pastor.'); return; }
 
@@ -617,43 +672,41 @@ function calcularDescuentosDiezmo(monto, pctNacional, pctLocal, pctAhorro) {
 }
 
 function actualizarPreviewDiezmo() {
-  var montoEl = document.getElementById('diezmoMonto');
-  var pcnEl = document.getElementById('pctNacional');
-  var pclEl = document.getElementById('pctLocal');
-  var pcaEl = document.getElementById('pctAhorro');
-  var prevEl = document.getElementById('previewDiezmo');
-  if (!montoEl || !prevEl) return;
-  var monto = parseFloat(montoEl.value);
-  var pcn = pcnEl ? parseFloat(pcnEl.value) : 5;
-  var pcl = pclEl ? parseFloat(pclEl.value) : 5;
-  var pca = (pcaEl && pcaEl.offsetParent !== null) ? parseFloat(pcaEl.value) : 30;
+  var mE = document.getElementById('diezmoMonto');
+  var pcnE = document.getElementById('pctNacional');
+  var pclE = document.getElementById('pctLocal');
+  var pcaE = document.getElementById('pctAhorro');
+  var prevE = document.getElementById('previewDiezmo');
+  if (!mE || !prevE) return;
+  var monto = parseFloat(mE.value);
+  var pcn = pcnE ? parseFloat(pcnE.value) : 5;
+  var pcl = pclE ? parseFloat(pclE.value) : 5;
+  var pca = (pcaE && pcaE.offsetParent !== null) ? parseFloat(pcaE.value) : 30;
   if (isNaN(pcn)) pcn = 5; if (isNaN(pcl)) pcl = 5; if (isNaN(pca)) pca = 30;
-  if (!monto || monto <= 0) { prevEl.innerHTML = ''; return; }
+  if (!monto || monto <= 0) { prevE.innerHTML = ''; return; }
   var d = calcularDescuentosDiezmo(monto, pcn, pcl, pca);
-  prevEl.innerHTML = '<div class="info" style="font-size:13px;">' +
-    '<b>Vista previa del cálculo:</b><br>' +
+  prevE.innerHTML = '<div class="info" style="font-size:13px;">' +
+    '<b>Vista previa:</b><br>' +
     'Bruto: <b>' + formatoMoneda(d.bruto) + '</b><br>' +
-    '(-) Diezmo de Diezmos (10%): ' + formatoMoneda(d.diezmoDiezmos) + '<br>' +
+    '(-) D. Diezmos (10%): ' + formatoMoneda(d.diezmoDiezmos) + '<br>' +
     '(-) Asomipel (6%): ' + formatoMoneda(d.asomipel) + '<br>' +
-    '(-) Fondo Nacional (' + d.pctNacional + '%): ' + formatoMoneda(d.fondoNacional) + '<br>' +
-    '(-) Fondo Local (' + d.pctLocal + '%): ' + formatoMoneda(d.fondoLocal) + '<br>' +
+    '(-) F. Nacional (' + d.pctNacional + '%): ' + formatoMoneda(d.fondoNacional) + '<br>' +
+    '(-) F. Local (' + d.pctLocal + '%): ' + formatoMoneda(d.fondoLocal) + '<br>' +
     '(-) Ahorro Pastor (' + d.pctAhorro + '%): ' + formatoMoneda(d.ahorroPastor) + '<br>' +
-    '<b>Neto Pastor: ' + formatoMoneda(d.netoPastor) + '</b>' +
-    '</div>';
+    '<b>Neto Pastor: ' + formatoMoneda(d.netoPastor) + '</b></div>';
 }
 
 /* ============ LIBRO GENERAL ============ */
 function registrarMovimiento() {
-  if (!puedeEditarLibro()) { alert('No tienes permiso.'); return; }
+  if (!puedeEditarLibro()) { alert('Sin permiso.'); return; }
   var fecha = document.getElementById('movFecha').value;
   var fondo = document.getElementById('movFondo').value;
   var concepto = document.getElementById('movConcepto').value.trim();
   var tipo = document.getElementById('movTipo').value;
   var monto = parseInt(document.getElementById('movMonto').value, 10);
-
-  if (!fecha) { alert('Ingresa fecha'); return; }
-  if (!fondo) { alert('Selecciona fondo'); return; }
-  if (!concepto) { alert('Ingresa concepto'); return; }
+  if (!fecha) { alert('Fecha requerida'); return; }
+  if (!fondo) { alert('Fondo requerido'); return; }
+  if (!concepto) { alert('Concepto requerido'); return; }
   if (!monto || monto <= 0) { alert('Monto inválido'); return; }
 
   var db = loadDB();
@@ -664,7 +717,6 @@ function registrarMovimiento() {
   };
   db.libro.push(Object.assign({}, recibo, { id: Date.now() + Math.random(), creadoEn: new Date().toISOString() }));
   saveDB(db);
-
   document.getElementById('movMonto').value = '';
   document.getElementById('movConcepto').value = '';
   mostrarRecibo(recibo);
@@ -672,10 +724,8 @@ function registrarMovimiento() {
 }
 
 function saldoFondo(db, fondo) {
-  var ing = db.libro.filter(function(m){ return m.fondo === fondo && m.tipo === 'ingreso'; })
-    .reduce(function(s,m){ return s + m.monto; }, 0);
-  var egr = db.libro.filter(function(m){ return m.fondo === fondo && m.tipo === 'egreso'; })
-    .reduce(function(s,m){ return s + m.monto; }, 0);
+  var ing = db.libro.filter(function(m){ return m.fondo === fondo && m.tipo === 'ingreso'; }).reduce(function(s,m){ return s + m.monto; }, 0);
+  var egr = db.libro.filter(function(m){ return m.fondo === fondo && m.tipo === 'egreso'; }).reduce(function(s,m){ return s + m.monto; }, 0);
   return ing - egr;
 }
 
@@ -688,10 +738,8 @@ function renderLibro() {
   var tbody = document.querySelector('#tablaLibro tbody');
   if (!tbody) return;
   tbody.innerHTML = '';
-
   var visibles = fondosVisibles();
   var movs = db.libro.filter(function(m){ return visibles.indexOf(m.fondo) !== -1; });
-
   var ing = 0, egr = 0;
   movs.slice().reverse().filter(function(m){
     if (filtro && m.concepto.toLowerCase().indexOf(filtro) < 0 &&
@@ -703,9 +751,7 @@ function renderLibro() {
   }).forEach(function(m){
     if (m.tipo === 'ingreso') ing += m.monto; else egr += m.monto;
     var tr = document.createElement('tr');
-    tr.innerHTML = '<td>' + m.numero + '</td>' +
-      '<td>' + m.fecha + '</td>' +
-      '<td>' + m.fondo + '</td>' +
+    tr.innerHTML = '<td>' + m.numero + '</td><td>' + m.fecha + '</td><td>' + m.fondo + '</td>' +
       '<td>' + m.concepto + '</td>' +
       '<td class="num pos">' + (m.tipo === 'ingreso' ? formatoMoneda(m.monto) : '') + '</td>' +
       '<td class="num neg">' + (m.tipo === 'egreso' ? formatoMoneda(m.monto) : '') + '</td>' +
@@ -717,10 +763,9 @@ function renderLibro() {
       '</td>';
     tbody.appendChild(tr);
   });
-
   document.getElementById('totalesLibro').innerHTML =
     '<b>Entradas:</b> ' + formatoMoneda(ing) + ' | <b>Salidas:</b> ' + formatoMoneda(egr) +
-    ' | <b>Saldo del período:</b> ' + formatoMoneda(ing - egr);
+    ' | <b>Saldo:</b> ' + formatoMoneda(ing - egr);
 }
 
 function verReciboLibro(id) {
@@ -743,7 +788,7 @@ function eliminarLibro(id) {
   var m = db.libro.find(function(x){ return String(x.id) === String(id); });
   if (!m) return;
   if (!puedeMoverFondo(m.fondo)) { alert('Sin permiso.'); return; }
-  if (!confirm('¿Eliminar movimiento?')) return;
+  if (!confirm('¿Eliminar?')) return;
   db.libro = db.libro.filter(function(x){ return String(x.id) !== String(id); });
   saveDB(db); renderTodo();
 }
@@ -754,36 +799,28 @@ function registrarDiezmo() {
   var fecha = document.getElementById('diezmoFecha').value;
   var concepto = document.getElementById('diezmoConcepto').value.trim();
   var monto = parseInt(document.getElementById('diezmoMonto').value, 10);
-  var pctNacional = parseFloat(document.getElementById('pctNacional').value);
-  var pctLocal = parseFloat(document.getElementById('pctLocal').value);
+  var pcn = parseFloat(document.getElementById('pctNacional').value);
+  var pcl = parseFloat(document.getElementById('pctLocal').value);
   var pcaEl = document.getElementById('pctAhorro');
-  var pctAhorro = (pcaEl && pcaEl.offsetParent !== null) ? parseFloat(pcaEl.value) : 30;
-
-  if (!fecha) { alert('Ingresa fecha'); return; }
-  if (!concepto) { alert('Ingresa concepto'); return; }
+  var pca = (pcaEl && pcaEl.offsetParent !== null) ? parseFloat(pcaEl.value) : 30;
+  if (!fecha) { alert('Fecha requerida'); return; }
+  if (!concepto) { alert('Concepto requerido'); return; }
   if (!monto || monto <= 0) { alert('Monto inválido'); return; }
-  if (isNaN(pctNacional) || pctNacional < 0 || pctNacional > 100) { alert('% Fondo Nacional inválido'); return; }
-  if (isNaN(pctLocal) || pctLocal < 0 || pctLocal > 100) { alert('% Fondo Local inválido'); return; }
-  if (isNaN(pctAhorro) || pctAhorro < 0 || pctAhorro > 100) { alert('% Ahorro inválido'); return; }
+  if (isNaN(pcn) || pcn < 0 || pcn > 100) { alert('% F. Nacional inválido'); return; }
+  if (isNaN(pcl) || pcl < 0 || pcl > 100) { alert('% F. Local inválido'); return; }
+  if (isNaN(pca) || pca < 0 || pca > 100) { alert('% Ahorro inválido'); return; }
 
-  var desc = calcularDescuentosDiezmo(monto, pctNacional, pctLocal, pctAhorro);
+  var desc = calcularDescuentosDiezmo(monto, pcn, pcl, pca);
   var db = loadDB();
-  var recibo = {
-    numero: generarReciboNum(db),
-    fecha: fecha, concepto: concepto, monto: monto, usuario: session.user
-  };
+  var recibo = { numero: generarReciboNum(db), fecha: fecha, concepto: concepto, monto: monto, usuario: session.user };
   db.diezmos.push(Object.assign({}, recibo, {
-    id: Date.now() + Math.random(),
-    estado: 'pendiente',
-    creadoEn: new Date().toISOString(),
-    descuentos: desc
+    id: Date.now() + Math.random(), estado: 'pendiente',
+    creadoEn: new Date().toISOString(), descuentos: desc
   }));
   saveDB(db);
-
   document.getElementById('diezmoConcepto').value = '';
   document.getElementById('diezmoMonto').value = '';
   document.getElementById('previewDiezmo').innerHTML = '';
-
   mostrarReciboDiezmoConDescuentos(Object.assign({}, recibo, { descuentos: desc }));
   renderTodo();
 }
@@ -794,7 +831,6 @@ function renderDiezmos() {
   if (!tbody) return;
   tbody.innerHTML = '';
   var t = { bruto:0, dd:0, asomipel:0, nac:0, loc:0, aho:0, neto:0 };
-
   db.diezmos.slice().reverse().forEach(function(d){
     var desc = d.descuentos || calcularDescuentosDiezmo(d.monto, 5, 5, 30);
     if (d.estado === 'pendiente') {
@@ -803,9 +839,7 @@ function renderDiezmos() {
       t.aho += desc.ahorroPastor; t.neto += desc.netoPastor;
     }
     var tr = document.createElement('tr');
-    tr.innerHTML = '<td>' + d.numero + '</td>' +
-      '<td>' + d.fecha + '</td>' +
-      '<td>' + d.concepto + '</td>' +
+    tr.innerHTML = '<td>' + d.numero + '</td><td>' + d.fecha + '</td><td>' + d.concepto + '</td>' +
       '<td class="num">' + formatoMoneda(desc.bruto) + '</td>' +
       '<td class="num">' + formatoMoneda(desc.diezmoDiezmos) + '</td>' +
       '<td class="num">' + formatoMoneda(desc.asomipel) + '</td>' +
@@ -820,17 +854,12 @@ function renderDiezmos() {
       '</td>';
     tbody.appendChild(tr);
   });
-
   var totalEl = document.getElementById('totalDiezmosPendientes');
   if (totalEl) {
-    totalEl.innerHTML = '<b>Pendientes:</b> ' +
-      'Bruto: ' + formatoMoneda(t.bruto) + ' | ' +
-      'D. Diezmos: ' + formatoMoneda(t.dd) + ' | ' +
-      'Asomipel: ' + formatoMoneda(t.asomipel) + ' | ' +
-      'F. Nac.: ' + formatoMoneda(t.nac) + ' | ' +
-      'F. Loc.: ' + formatoMoneda(t.loc) + ' | ' +
-      'Ahorro: ' + formatoMoneda(t.aho) + ' | ' +
-      '<b>Neto Pastor: ' + formatoMoneda(t.neto) + '</b>';
+    totalEl.innerHTML = '<b>Pendientes:</b> Bruto: ' + formatoMoneda(t.bruto) +
+      ' | D.Dz: ' + formatoMoneda(t.dd) + ' | Asomipel: ' + formatoMoneda(t.asomipel) +
+      ' | F.Nac: ' + formatoMoneda(t.nac) + ' | F.Loc: ' + formatoMoneda(t.loc) +
+      ' | Ahorro: ' + formatoMoneda(t.aho) + ' | <b>Neto Pastor: ' + formatoMoneda(t.neto) + '</b>';
   }
 }
 
@@ -845,7 +874,7 @@ function eliminarDiezmo(id) {
   var d = db.diezmos.find(function(x){ return String(x.id) === String(id); });
   if (!d) return;
   if (d.estado === 'cerrado' && !esPastor()) { alert('Diezmo cerrado.'); return; }
-  if (!confirm('¿Eliminar diezmo?')) return;
+  if (!confirm('¿Eliminar?')) return;
   db.diezmos = db.diezmos.filter(function(x){ return String(x.id) !== String(id); });
   saveDB(db); renderTodo();
 }
@@ -856,14 +885,12 @@ function cerrarMes() {
   var mes = document.getElementById('cierreMes').value;
   var anio = document.getElementById('cierreAnio').value;
   var prefijo = anio + '-' + mes;
-
   var db = loadDB();
   var pend = db.diezmos.filter(function(d){ return d.estado === 'pendiente' && d.fecha.indexOf(prefijo) === 0; });
   if (pend.length === 0) {
     document.getElementById('cierreResultado').innerHTML = '<p class="info">No hay diezmos pendientes para ' + prefijo + '.</p>';
     return;
   }
-
   var t = { bruto:0, dd:0, asomipel:0, nac:0, loc:0, aho:0, neto:0 };
   pend.forEach(function(d){
     var x = d.descuentos || calcularDescuentosDiezmo(d.monto, 5, 5, 30);
@@ -871,11 +898,9 @@ function cerrarMes() {
     t.nac += x.fondoNacional; t.loc += x.fondoLocal;
     t.aho += x.ahorroPastor; t.neto += x.netoPastor;
   });
-
   var diasMes = new Date(parseInt(anio), parseInt(mes), 0).getDate();
   var fechaCierre = prefijo + '-' + String(diasMes).padStart(2, '0');
 
-  // Ingreso bruto al fondo "Diezmos"
   db.libro.push({
     id: Date.now() + Math.random(),
     numero: generarReciboNum(db),
@@ -884,14 +909,12 @@ function cerrarMes() {
     tipo: 'ingreso', monto: t.bruto, usuario: session.user,
     creadoEn: new Date().toISOString()
   });
-
-  // Egresos por cada concepto
   var egresos = [
     { concepto: 'Diezmo de Diezmos ' + prefijo, monto: t.dd },
-    { concepto: 'Asomipel ' + prefijo,          monto: t.asomipel },
-    { concepto: 'Fondo Nacional ' + prefijo,    monto: t.nac },
-    { concepto: 'Fondo Local ' + prefijo,       monto: t.loc },
-    { concepto: 'Neto Pastor ' + prefijo,       monto: t.neto }
+    { concepto: 'Asomipel ' + prefijo, monto: t.asomipel },
+    { concepto: 'Fondo Nacional ' + prefijo, monto: t.nac },
+    { concepto: 'Fondo Local ' + prefijo, monto: t.loc },
+    { concepto: 'Neto Pastor ' + prefijo, monto: t.neto }
   ];
   egresos.forEach(function(e){
     if (e.monto <= 0) return;
@@ -904,8 +927,6 @@ function cerrarMes() {
       creadoEn: new Date().toISOString()
     });
   });
-
-  // Ahorro Pastor: se ingresa al ahorro privado
   if (t.aho > 0) {
     db.ahorro.push({
       id: Date.now() + Math.random(),
@@ -915,28 +936,14 @@ function cerrarMes() {
       creadoEn: new Date().toISOString()
     });
   }
-
-  // Marcar diezmos como cerrados
   db.diezmos.forEach(function(d){
     if (d.estado === 'pendiente' && d.fecha.indexOf(prefijo) === 0) d.estado = 'cerrado';
   });
-
   db.cierres.push({ mes: prefijo, totales: t, fecha: new Date().toISOString(), usuario: session.user });
   saveDB(db);
-
   document.getElementById('cierreResultado').innerHTML =
-    '<div class="info">' +
-    '✅ <b>Cierre ' + prefijo + ' realizado.</b><br>' +
-    'Diezmos procesados: <b>' + pend.length + '</b><br>' +
-    'Bruto: <b>' + formatoMoneda(t.bruto) + '</b><br>' +
-    'Diezmo de Diezmos: ' + formatoMoneda(t.dd) + '<br>' +
-    'Asomipel: ' + formatoMoneda(t.asomipel) + '<br>' +
-    'Fondo Nacional: ' + formatoMoneda(t.nac) + '<br>' +
-    'Fondo Local: ' + formatoMoneda(t.loc) + '<br>' +
-    'Ahorro Pastor (privado): ' + formatoMoneda(t.aho) + '<br>' +
-    'Neto Pastor: ' + formatoMoneda(t.neto) +
-    '</div>';
-
+    '<div class="info">✅ Cierre ' + prefijo + ' realizado. Bruto: ' + formatoMoneda(t.bruto) +
+    ' | Ahorro Pastor: ' + formatoMoneda(t.aho) + ' | Neto Pastor: ' + formatoMoneda(t.neto) + '</div>';
   renderTodo();
 }
 
@@ -946,16 +953,12 @@ function registrarEgresoAhorro() {
   var fecha = document.getElementById('ahorroFecha').value;
   var concepto = document.getElementById('ahorroConcepto').value.trim();
   var monto = parseInt(document.getElementById('ahorroMonto').value, 10);
-  if (!fecha) { alert('Ingresa fecha'); return; }
-  if (!concepto) { alert('Ingresa concepto'); return; }
-  if (!monto || monto <= 0) { alert('Monto inválido'); return; }
-
+  if (!fecha || !concepto || !monto || monto <= 0) { alert('Complete todos los campos'); return; }
   var db = loadDB();
   db.ahorro.push({
     id: Date.now() + Math.random(),
     numero: generarReciboNum(db),
-    fecha: fecha, concepto: concepto,
-    tipo: 'egreso', monto: monto, usuario: session.user,
+    fecha: fecha, concepto: concepto, tipo: 'egreso', monto: monto, usuario: session.user,
     creadoEn: new Date().toISOString()
   });
   saveDB(db);
@@ -969,40 +972,33 @@ function renderAhorro() {
   var db = loadDB(); if (!db) return;
   var ing = db.ahorro.filter(function(a){ return a.tipo === 'ingreso'; }).reduce(function(s,a){ return s + a.monto; }, 0);
   var egr = db.ahorro.filter(function(a){ return a.tipo === 'egreso'; }).reduce(function(s,a){ return s + a.monto; }, 0);
-
   document.getElementById('ahorroSaldo').textContent = formatoMoneda(ing - egr);
   document.getElementById('ahorroIngresos').textContent = formatoMoneda(ing);
   document.getElementById('ahorroEgresos').textContent = formatoMoneda(egr);
-
   var tbody = document.querySelector('#tablaAhorro tbody');
   if (!tbody) return;
   tbody.innerHTML = '';
   db.ahorro.slice().reverse().forEach(function(a){
     var tr = document.createElement('tr');
-    tr.innerHTML = '<td>' + a.numero + '</td>' +
-      '<td>' + a.fecha + '</td>' +
-      '<td>' + a.concepto + '</td>' +
+    tr.innerHTML = '<td>' + a.numero + '</td><td>' + a.fecha + '</td><td>' + a.concepto + '</td>' +
       '<td><span class="tag ' + a.tipo + '">' + (a.tipo === 'ingreso' ? 'Entrada' : 'Salida') + '</span></td>' +
       '<td class="num ' + (a.tipo === 'ingreso' ? 'pos' : 'neg') + '">' + formatoMoneda(a.monto) + '</td>' +
       '<td><button class="btn-small btn-del" onclick="eliminarAhorro(\'' + a.id + '\')">Eliminar</button></td>';
     tbody.appendChild(tr);
   });
 }
-
 function eliminarAhorro(id) {
   if (!puedeVerAhorro()) return;
+  if (!confirm('¿Eliminar?')) return;
   var db = loadDB();
-  if (!confirm('¿Eliminar movimiento?')) return;
   db.ahorro = db.ahorro.filter(function(a){ return String(a.id) !== String(id); });
   saveDB(db); renderTodo();
 }
 
-/* ============ PANEL / FONDOS ============ */
+/* ============ PANEL ============ */
 function renderPanel() {
   var db = loadDB(); if (!db) return;
   var visibles = fondosVisibles();
-
-  // Tarjetas resumen
   var totalIng = 0, totalEgr = 0;
   db.libro.forEach(function(m){
     if (visibles.indexOf(m.fondo) < 0) return;
@@ -1025,30 +1021,25 @@ function renderPanel() {
     cards.innerHTML = html;
   }
 
-  // Grid de fondos
   var grid = document.getElementById('fondosGrid');
   if (grid) {
     grid.innerHTML = '';
     var totalFondos = 0;
     visibles.forEach(function(f){
-      var saldo = saldoFondo(db, f);
-      totalFondos += saldo;
+      var s = saldoFondo(db, f);
+      totalFondos += s;
       var movs = db.libro.filter(function(m){ return m.fondo === f; }).length;
       var card = document.createElement('div');
-      card.className = 'fondo-card' + (saldo < 0 ? ' negativo' : '');
+      card.className = 'fondo-card' + (s < 0 ? ' negativo' : '');
       card.onclick = function(){ verDetalleFondo(f); };
-      card.innerHTML = '<h4>' + f + '</h4>' +
-        '<div class="balance">' + formatoMoneda(saldo) + '</div>' +
-        '<div class="detalle">' + movs + ' movimiento(s)</div>';
+      card.innerHTML = '<h4>' + f + '</h4><div class="balance">' + formatoMoneda(s) + '</div><div class="detalle">' + movs + ' movimiento(s)</div>';
       grid.appendChild(card);
     });
-
-    // Agregar tarjeta de total
-    var cardTot = document.createElement('div');
-    cardTot.className = 'fondo-card';
-    cardTot.style.borderTopColor = '#f39c12';
-    cardTot.innerHTML = '<h4>TOTAL GENERAL</h4><div class="balance">' + formatoMoneda(totalFondos) + '</div><div class="detalle">Suma de todos los fondos</div>';
-    grid.appendChild(cardTot);
+    var cTot = document.createElement('div');
+    cTot.className = 'fondo-card';
+    cTot.style.borderTopColor = '#f39c12';
+    cTot.innerHTML = '<h4>TOTAL GENERAL</h4><div class="balance">' + formatoMoneda(totalFondos) + '</div><div class="detalle">Suma de todos los fondos</div>';
+    grid.appendChild(cTot);
   }
 }
 
@@ -1056,9 +1047,8 @@ function verDetalleFondo(fondo) {
   var db = loadDB();
   var movs = db.libro.filter(function(m){ return m.fondo === fondo; }).slice().reverse();
   var html = '<div class="form-card"><h4>Fondo: ' + fondo + '</h4>';
-  if (movs.length === 0) {
-    html += '<p class="info">Sin movimientos.</p>';
-  } else {
+  if (movs.length === 0) { html += '<p class="info">Sin movimientos.</p>'; }
+  else {
     html += '<div style="overflow-x:auto;"><table class="data-table"><thead><tr>' +
       '<th>Recibo</th><th>Fecha</th><th>Concepto</th><th>Entradas</th><th>Salidas</th><th>Usuario</th></tr></thead><tbody>';
     movs.forEach(function(m){
@@ -1089,7 +1079,6 @@ function renderUsuarios() {
     tbody.appendChild(tr);
   });
 }
-
 function crearUsuario() {
   if (!esPastor()) { alert('Solo el Pastor.'); return; }
   var user = document.getElementById('newUser').value.trim();
@@ -1106,10 +1095,9 @@ function crearUsuario() {
   document.getElementById('newComite').value = '';
   renderUsuarios();
 }
-
 function eliminarUsuario(user) {
   if (!esPastor()) return;
-  if (user === 'pastor') { alert('No se puede eliminar al Pastor.'); return; }
+  if (user === 'pastor') { alert('Protegido.'); return; }
   if (!confirm('¿Eliminar ' + user + '?')) return;
   var db = loadDB();
   db.usuarios = db.usuarios.filter(function(u){ return u.user !== user; });
@@ -1119,22 +1107,17 @@ function eliminarUsuario(user) {
 /* ============ SELECTS ============ */
 function llenarSelectsFondos() {
   var visibles = fondosVisibles();
-  // Select de registro (solo fondos donde puede mover)
   var sel = document.getElementById('movFondo');
   if (sel) {
     sel.innerHTML = '';
-    visibles.forEach(function(f){
-      if (puedeMoverFondo(f)) sel.add(new Option(f, f));
-    });
+    visibles.forEach(function(f){ if (puedeMoverFondo(f)) sel.add(new Option(f, f)); });
   }
-  // Select de filtro (todos los visibles + "Todos")
   var sf = document.getElementById('filtroLibroFondo');
   if (sf) {
     sf.innerHTML = '';
     sf.add(new Option('Todos los fondos', ''));
     visibles.forEach(function(f){ sf.add(new Option(f, f)); });
   }
-  // Select de exportación
   var se = document.getElementById('excelLibroFondo');
   if (se) {
     se.innerHTML = '';
@@ -1193,11 +1176,9 @@ function exportarLibroExcel() {
   var db = loadDB();
   var visibles = fondosVisibles();
   var movs = db.libro.filter(function(m){
-    return visibles.indexOf(m.fondo) !== -1 && m.fecha.indexOf(prefijo) === 0 &&
-      (!fondo || m.fondo === fondo);
+    return visibles.indexOf(m.fondo) !== -1 && m.fecha.indexOf(prefijo) === 0 && (!fondo || m.fondo === fondo);
   });
   if (movs.length === 0) { alert('Sin movimientos.'); return; }
-
   var filas = [
     ['IGLESIA PENTECOSTAL LATINOAMERICANA LIBERIA'],
     ['LIBRO GENERAL - ' + prefijo + (fondo ? ' - ' + fondo : '')],
@@ -1226,11 +1207,9 @@ function imprimirLibro() {
   var db = loadDB();
   var visibles = fondosVisibles();
   var movs = db.libro.filter(function(m){
-    return visibles.indexOf(m.fondo) !== -1 && m.fecha.indexOf(prefijo) === 0 &&
-      (!fondo || m.fondo === fondo);
+    return visibles.indexOf(m.fondo) !== -1 && m.fecha.indexOf(prefijo) === 0 && (!fondo || m.fondo === fondo);
   });
   if (movs.length === 0) { alert('Sin movimientos.'); return; }
-
   var ing = 0, egr = 0;
   var filas = movs.map(function(m){
     if (m.tipo === 'ingreso') ing += m.monto; else egr += m.monto;
@@ -1239,19 +1218,14 @@ function imprimirLibro() {
       '<td style="text-align:right;">' + (m.tipo === 'egreso' ? formatoMoneda(m.monto) : '') + '</td>' +
       '<td>' + m.usuario + '</td></tr>';
   }).join('');
-
-  var html =
-    '<h1>Iglesia Pentecostal Latinoamericana Liberia</h1>' +
+  abrirVentanaImpresion('<h1>Iglesia Pentecostal Latinoamericana Liberia</h1>' +
     '<h2>Libro General - ' + prefijo + (fondo ? ' - ' + fondo : '') + '</h2>' +
     '<p style="text-align:right;">Generado: ' + new Date().toLocaleString('es-CR') + ' por ' + session.user + '</p>' +
     '<table><thead><tr><th>Recibo</th><th>Fecha</th><th>Fondo</th><th>Concepto</th><th>Entradas</th><th>Salidas</th><th>Usuario</th></tr></thead>' +
     '<tbody>' + filas + '</tbody>' +
-    '<tfoot>' +
-    '<tr><td colspan="4" style="text-align:right;">Total Entradas:</td><td style="text-align:right;">' + formatoMoneda(ing) + '</td><td></td><td></td></tr>' +
+    '<tfoot><tr><td colspan="4" style="text-align:right;">Total Entradas:</td><td style="text-align:right;">' + formatoMoneda(ing) + '</td><td></td><td></td></tr>' +
     '<tr><td colspan="4" style="text-align:right;">Total Salidas:</td><td></td><td style="text-align:right;">' + formatoMoneda(egr) + '</td><td></td></tr>' +
-    '<tr><td colspan="4" style="text-align:right;">SALDO:</td><td style="text-align:right;">' + formatoMoneda(ing - egr) + '</td><td></td><td></td></tr>' +
-    '</tfoot></table>';
-  abrirVentanaImpresion(html);
+    '<tr><td colspan="4" style="text-align:right;">SALDO:</td><td style="text-align:right;">' + formatoMoneda(ing - egr) + '</td><td></td><td></td></tr></tfoot></table>');
 }
 
 function exportarDiezmosExcel() {
@@ -1261,12 +1235,8 @@ function exportarDiezmosExcel() {
   var db = loadDB();
   var dz = db.diezmos.filter(function(d){ return d.fecha.indexOf(prefijo) === 0; });
   if (dz.length === 0) { alert('Sin diezmos.'); return; }
-
-  var filas = [
-    ['DIEZMOS - ' + prefijo],
-    [],
-    ['Recibo','Fecha','Concepto','Bruto','D. Diezmos','Asomipel','F. Nac.','F. Loc.','Ahorro P.','Neto Pastor','Estado']
-  ];
+  var filas = [['DIEZMOS - ' + prefijo], [],
+    ['Recibo','Fecha','Concepto','Bruto','D. Diezmos','Asomipel','F. Nac.','F. Loc.','Ahorro P.','Neto Pastor','Estado']];
   dz.forEach(function(d){
     var x = d.descuentos || calcularDescuentosDiezmo(d.monto, 5, 5, 30);
     filas.push([d.numero, d.fecha, d.concepto, x.bruto, x.diezmoDiezmos, x.asomipel,
@@ -1295,7 +1265,7 @@ function imprimirDiezmos() {
       '<td>' + d.estado + '</td></tr>';
   }).join('');
   abrirVentanaImpresion('<h1>Diezmos - ' + prefijo + '</h1>' +
-    '<table><thead><tr><th>Recibo</th><th>Fecha</th><th>Concepto</th><th>Bruto</th><th>D. Dz.</th><th>Asomipel</th><th>F.Nac.</th><th>F.Loc.</th><th>Ahorro</th><th>Neto</th><th>Estado</th></tr></thead><tbody>' + filas + '</tbody></table>');
+    '<table><thead><tr><th>Recibo</th><th>Fecha</th><th>Concepto</th><th>Bruto</th><th>D.Dz.</th><th>Asomipel</th><th>F.Nac.</th><th>F.Loc.</th><th>Ahorro</th><th>Neto</th><th>Estado</th></tr></thead><tbody>' + filas + '</tbody></table>');
 }
 
 function exportarAhorroExcel() {
@@ -1331,10 +1301,7 @@ function imprimirAhorro() {
 /* ============ RENDER GLOBAL ============ */
 function renderTodo() {
   if (!session) return;
-  if (esComite()) {
-    renderLibro();
-    return;
-  }
+  if (esComite()) { renderLibro(); return; }
   renderPanel();
   renderLibro();
   renderDiezmos();
@@ -1344,7 +1311,7 @@ function renderTodo() {
 
 /* ============ INIT ============ */
 window.addEventListener('DOMContentLoaded', function() {
-  console.log('Iniciando sistema v4...');
+  console.log('Iniciando sistema v4 con Firebase...');
   initDB();
 
   function on(id, evento, fn) {
@@ -1376,11 +1343,11 @@ window.addEventListener('DOMContentLoaded', function() {
   });
 
   llenarSelectoresFecha();
-  
-   // Iniciar Firebase
+
+  // Iniciar Firebase
   initFirebase();
   setTimeout(function(){ escucharFirestore(); }, 1200);
-  
+
   console.log('Sistema listo.');
 });
 </script>
