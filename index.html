@@ -1376,6 +1376,11 @@ window.addEventListener('DOMContentLoaded', function() {
   });
 
   llenarSelectoresFecha();
+  
+   // Iniciar Firebase
+  initFirebase();
+  setTimeout(function(){ escucharFirestore(); }, 1200);
+  
   console.log('Sistema listo.');
 });
 </script>
