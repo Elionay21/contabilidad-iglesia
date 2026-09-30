@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contabilidad - Iglesia Pentecostal Latinoamericana Liberia</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #eef2f7; color: #2c3e50; }
+.hidden { display: none !important; }
+
+/* LOGIN */
+.login-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #4b6cb7, #182848); padding: 16px; }
+.login-box { background: white; padding: 36px; border-radius: 12px; width: 100%; max-width: 420px; box-shadow: 0 12px 40px rgba(0,0,0,.3); }
+.login-box h1 { font-size: 20px; margin-bottom: 4px; text-align: center; }
+.subtitle { text-align: center; color: #7f8c8d; margin-bottom: 24px; font-size: 13px; }
+.logo-login { display: block; margin: 0 auto 16px; height: 110px; width: auto; object-fit: contain; }
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; font-size: 13px; margin-bottom: 4px; font-weight: 600; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 9px 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; font-family: inherit; }
+.form-group input:focus, .form-group select:focus { outline: 2px solid #4b6cb7; border-color: transparent; }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 14px; }
+
+.btn-primary { background: #4b6cb7; color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: .2s; }
+.btn-primary:hover { background: #3a569b; }
+.btn-logout { background: #e74c3c; color: white; border: none; padding: 7px 14px; border-radius: 5px; cursor: pointer; font-weight: 600; }
+.btn-small { padding: 4px 10px; font-size: 12px; border: none; border-radius: 4px; cursor: pointer; margin-right: 4px; }
+.btn-edit { background: #3498db; color: white; }
+.btn-del { background: #e74c3c; color: white; }
+.btn-view { background: #95a5a6; color: white; }
+.btn-excel { background: #27ae60; color: white; padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; margin-right: 4px; }
+.btn-print { background: #8e44ad; color: white; padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+.btn-small:disabled { opacity: .4; cursor: not-allowed; }
+.error { color: #e74c3c; font-size: 13px; margin-top: 10px; text-align: center; }
+.hint { margin-top: 16px; text-align: center; color: #95a5a6; font-size: 12px; line-height: 1.6; }
+
+/* TOPBAR */
+.topbar { background: #182848; color: white; padding: 8px 20px; display: flex; justify-content: space-between; align-items: center; min-height: 70px; flex-wrap: wrap; gap: 10px; }
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-left h2 { font-size: 15px; margin: 0; }
+.logo { height: 50px; width: auto; object-fit: contain; display: block; }
+.user-info { display: flex; align-items: center; gap: 12px; font-size: 13px; flex-wrap: wrap; }
+
+/* TABS */
+.tabs { display: flex; gap: 4px; background: #fff; padding: 8px 16px; border-bottom: 1px solid #dce1e8; flex-wrap: wrap; }
+.tab { padding: 8px 14px; border: none; background: transparent; cursor: pointer; border-radius: 6px; font-size: 13px; font-weight: 500; color: #4a5568; }
+.tab:hover { background: #eef2f7; }
+.tab.active { background: #4b6cb7; color: white; }
+
+main { padding: 20px; max-width: 1400px; margin: 0 auto; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+h3 { margin-bottom: 14px; color: #182848; font-size: 18px; }
+h4 { margin-bottom: 10px; font-size: 15px; }
+
+/* CARDS */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.card { background: white; border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.06); border-left: 5px solid #4b6cb7; }
+.card h4 { font-size: 11px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 6px; font-weight: 600; }
+.card .value { font-size: 20px; font-weight: 700; color: #182848; }
+.card.ingreso { border-color: #27ae60; }
+.card.egreso { border-color: #e74c3c; }
+.card.saldo { border-color: #f39c12; }
+.card.ahorro { border-color: #8e44ad; }
+
+.form-card { background: white; padding: 18px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.05); margin-bottom: 18px; }
+
+/* TABLAS */
+.data-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.06); font-size: 12.5px; margin-bottom: 18px; }
+.data-table th, .data-table td { padding: 7px 9px; text-align: left; border-bottom: 1px solid #eef2f7; }
+.data-table th { background: #f7f9fc; font-weight: 600; font-size: 11px; text-transform: uppercase; color: #4a5568; }
+.data-table tr:hover { background: #fafbfd; }
+.data-table td.num { text-align: right; }
+.data-table td.neg { color: #e74c3c; }
+.data-table td.pos { color: #27ae60; font-weight: 600; }
+.tag { padding: 2px 7px; border-radius: 12px; font-size: 10.5px; font-weight: 600; }
+.tag.ingreso { background: #d4edda; color: #155724; }
+.tag.egreso { background: #f8d7da; color: #721c24; }
+.tag.pendiente { background: #fff3cd; color: #856404; }
+.tag.cerrado { background: #d1ecf1; color: #0c5460; }
+
+.filter-bar { margin-bottom: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+.filter-bar input, .filter-bar select { padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px; }
+.filter-bar input { flex: 1; min-width: 200px; max-width: 320px; }
+.export-bar { margin-bottom: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.export-bar select { padding: 6px 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px; }
+
+.info { background: #e7f3ff; color: #0c5460; padding: 12px 14px; border-radius: 6px; margin-bottom: 14px; font-size: 13px; }
+.info.ahorro { background: #f4ecf7; color: #6c3483; border-left: 4px solid #8e44ad; }
+.total-line { font-size: 13px; margin-top: 10px; padding: 12px; background: #f7f9fc; border-radius: 6px; }
+
+/* FONDOS */
+.fondos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.fondo-card { background: white; padding: 16px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.06); border-top: 4px solid #4b6cb7; cursor: pointer; transition: transform .15s; }
+.fondo-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+.fondo-card h4 { margin-bottom: 8px; font-size: 13px; color: #4a5568; text-transform: uppercase; }
+.fondo-card .balance { font-size: 22px; font-weight: 700; color: #182848; }
+.fondo-card .detalle { margin-top: 8px; font-size: 11px; color: #7f8c8d; }
+.fondo-card.negativo .balance { color: #e74c3c; }
+.fondo-card.ahorro { border-color: #8e44ad; background: #faf5fc; }
+
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
+.modal-content { background: white; padding: 24px; border-radius: 12px; max-width: 560px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto; }
+.close { position: absolute; top: 10px; right: 16px; font-size: 26px; cursor: pointer; color: #999; }
+
+.recibo { border: 2px dashed #4b6cb7; padding: 18px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 12.5px; }
+.recibo h2 { text-align: center; margin-bottom: 8px; color: #182848; font-size: 13px; }
+.recibo .recibo-num { text-align: center; color: #e74c3c; font-weight: bold; margin-bottom: 14px; }
+.recibo .linea { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dotted #ccc; }
+.recibo .monto { font-size: 18px; font-weight: bold; color: #27ae60; text-align: center; margin-top: 12px; }
+.recibo hr { border: none; border-top: 1px dashed #999; margin: 10px 0; }
+
+@media (max-width: 700px) {
+  .topbar-left h2 { font-size: 12px; }
+  main { padding: 12px; }
+  .data-table { font-size: 11px; }
+  .data-table th, .data-table td { padding: 5px; }
+}
+@media print {
+  body * { visibility: hidden; }
+  #reciboModal, #reciboModal * { visibility: visible; }
+  #reciboModal { position: absolute; left: 0; top: 0; background: white; }
+  .close, .modal-content button { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="login-container">
+  <div class="login-box">
+    <img src="logo.png" alt="Logo" class="logo-login" onerror="this.style.display='none'">
+    <h1>⛪ Sistema de Contabilidad</h1>
+    <p class="subtitle">Iglesia Pentecostal Latinoamericana Liberia</p>
+    <div class="form-group">
+      <label>Usuario</label>
+      <input type="text" id="loginUser" placeholder="usuario" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" id="loginPass" placeholder="••••••••">
+    </div>
+    <button class="btn-primary" id="btnLogin" style="width:100%;">Ingresar</button>
+    <p id="loginError" class="error"></p>
+    <div class="hint">
+      <b>Usuarios iniciales:</b><br>
+      pastor / pastor1201<br>
+      tesorero / tesorero1202<br>
+      misiones / misiones1204<br>
+      damas / damas1205
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appScreen" class="hidden">
+  <header class="topbar">
+    <div class="topbar-left">
+      <img src="logo.png" alt="Logo" class="logo" onerror="this.style.display='none'">
+      <h2>Iglesia Pentecostal Latinoamericana Liberia</h2>
+    </div>
+    <div class="user-info">
+      <span id="currentUserLabel"></span>
+      <button class="btn-logout" id="btnLogout">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="dashboard">📊 Panel</button>
+    <button class="tab" data-tab="libro">📖 Libro General</button>
+    <button class="tab" data-tab="diezmos">🙏 Diezmos</button>
+    <button class="tab" data-tab="ahorro" id="tabAhorroBtn">💼 Ahorro Pastor</button>
+    <button class="tab" data-tab="usuarios">👥 Usuarios</button>
+  </nav>
+
+  <main>
+
+    <!-- PANEL -->
+    <section id="tab-dashboard" class="tab-content active">
+      <h3>Panel General</h3>
+      <div class="cards" id="summaryCards"></div>
+
+      <h3>Fondos de la Iglesia</h3>
+      <p class="info">Cada tarjeta muestra el saldo actual del fondo. Los saldos se calculan automáticamente sumando las entradas y restando las salidas del Libro General.</p>
+      <div id="fondosGrid" class="fondos-grid"></div>
+
+      <h3>Detalle de Fondo Seleccionado</h3>
+      <div id="detalleFondo"></div>
+    </section>
+
+    <!-- LIBRO GENERAL -->
+    <section id="tab-libro" class="tab-content">
+      <h3>Libro General Principal</h3>
+      <p class="info">Todos los movimientos de la iglesia. Cada movimiento pertenece a un fondo/comité.</p>
+
+      <div class="form-card">
+        <h4>Registrar Movimiento</h4>
+        <div class="form-grid">
+          <div class="form-group"><label>Fecha</label><input type="date" id="movFecha"></div>
+          <div class="form-group">
+            <label>Fondo / Comité</label>
+            <select id="movFondo"></select>
+          </div>
+          <div class="form-group"><label>Concepto</label><input type="text" id="movConcepto" placeholder="Descripción"></div>
+          <div class="form-group"><label>Tipo</label>
+            <select id="movTipo">
+              <option value="ingreso">Entrada</option>
+              <option value="egreso">Salida</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Monto</label><input type="number" id="movMonto" step="1" min="0"></div>
+        </div>
+        <button class="btn-primary" id="btnRegMov">Registrar movimiento</button>
+      </div>
+
+      <div class="export-bar">
+        <b>Exportar / Imprimir:</b>
+        <select id="excelLibroMes"></select>
+        <select id="excelLibroAnio"></select>
+        <select id="excelLibroFondo"></select>
+        <button class="btn-excel" onclick="exportarLibroExcel()">📥 Excel</button>
+        <button class="btn-print" onclick="imprimirLibro()">🖨️ Imprimir</button>
+      </div>
+
+      <div class="filter-bar">
+        <input type="text" id="filtroLibro" placeholder="Buscar por concepto, fondo o recibo...">
+        <select id="filtroLibroFondo"></select>
+        <select id="filtroLibroTipo">
+          <option value="">Todos</option>
+          <option value="ingreso">Solo entradas</option>
+          <option value="egreso">Solo salidas</option>
+        </select>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table class="data-table" id="tablaLibro">
+          <thead>
+            <tr>
+              <th>Recibo</th><th>Fecha</th><th>Fondo</th><th>Concepto</th>
+              <th>Entradas</th><th>Salidas</th><th>Usuario</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p id="totalesLibro" class="total-line"></p>
+    </section>
+
+    <!-- DIEZMOS -->
+    <section id="tab-diezmos" class="tab-content">
+      <h3>Diezmos</h3>
+      <p class="info">
+        <b>Descuentos automáticos:</b> Diezmo de Diezmos 10%, Asomipel 6%, Ahorro Pastor 30% (Pastor puede modificarlo), Fondo Nacional y Fondo Local editables (por defecto 5%).
+        Al cerrar el mes, todo se ingresa al Libro General automáticamente.
+      </p>
+
+      <div class="form-card">
+        <h4>Registrar Diezmo</h4>
+        <div class="form-grid">
+          <div class="form-group"><label>Fecha</label><input type="date" id="diezmoFecha"></div>
+          <div class="form-group"><label>Miembro / Concepto</label><input type="text" id="diezmoConcepto"></div>
+          <div class="form-group"><label>Monto bruto</label><input type="number" id="diezmoMonto" step="1" min="0"></div>
+          <div class="form-group"><label>Fondo Nacional (%)</label><input type="number" id="pctNacional" value="5" step="0.01" min="0" max="100"></div>
+          <div class="form-group"><label>Fondo Local (%)</label><input type="number" id="pctLocal" value="5" step="0.01" min="0" max="100"></div>
+          <div class="form-group" id="grupoPctAhorro" style="display:none;">
+            <label>Ahorro Pastor (%) <small style="color:#8e44ad;">(solo Pastor)</small></label>
+            <input type="number" id="pctAhorro" value="30" step="0.01" min="0" max="100">
+          </div>
+        </div>
+        <button class="btn-primary" id="btnRegDiezmo">Registrar diezmo</button>
+        <div id="previewDiezmo" style="margin-top:12px;"></div>
+      </div>
+
+      <div class="export-bar">
+        <b>Exportar / Imprimir:</b>
+        <select id="excelDiezmosMes"></select>
+        <select id="excelDiezmosAnio"></select>
+        <button class="btn-excel" onclick="exportarDiezmosExcel()">📥 Excel</button>
+        <button class="btn-print" onclick="imprimirDiezmos()">🖨️ Imprimir</button>
+      </div>
+
+      <h4>Diezmos del Mes</h4>
+      <div class="export-bar">
+        <b>Cierre mensual:</b>
+        <select id="cierreMes"></select>
+        <select id="cierreAnio"></select>
+        <button class="btn-primary" id="btnCierre">Ejecutar cierre</button>
+      </div>
+      <div id="cierreResultado"></div>
+
+      <div style="overflow-x:auto;">
+        <table class="data-table" id="tablaDiezmos">
+          <thead>
+            <tr>
+              <th>Recibo</th><th>Fecha</th><th>Concepto</th><th>Bruto</th>
+              <th>D. Diezmos</th><th>Asomipel</th><th>F. Nacional</th><th>F. Local</th>
+              <th>Ahorro P.</th><th>Neto Pastor</th><th>Estado</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p id="totalDiezmosPendientes" class="total-line"></p>
+    </section>
+
+    <!-- AHORRO PASTOR -->
+    <section id="tab-ahorro" class="tab-content">
+      <h3>💼 Ahorro Pastor</h3>
+      <p class="info ahorro">
+        <b>Fondo privado del Pastor.</b> Solo el Pastor (Administrador) tiene acceso a esta sección.
+        El Ahorro Pastor se alimenta automáticamente de los diezmos cerrados y permite registrar egresos personales.
+      </p>
+
+      <div class="cards">
+        <div class="card ahorro"><h4>Ahorro Acumulado</h4><div class="value" id="ahorroSaldo">₡0</div></div>
+        <div class="card ingreso"><h4>Total Aportes</h4><div class="value" id="ahorroIngresos">₡0</div></div>
+        <div class="card egreso"><h4>Total Egresos</h4><div class="value" id="ahorroEgresos">₡0</div></div>
+      </div>
+
+      <div class="form-card">
+        <h4>Registrar Egreso del Ahorro</h4>
+        <div class="form-grid">
+          <div class="form-group"><label>Fecha</label><input type="date" id="ahorroFecha"></div>
+          <div class="form-group"><label>Concepto</label><input type="text" id="ahorroConcepto"></div>
+          <div class="form-group"><label>Monto</label><input type="number" id="ahorroMonto" step="1" min="0"></div>
+        </div>
+        <button class="btn-primary" id="btnRegEgresoAhorro">Registrar egreso</button>
+      </div>
+
+      <div class="export-bar">
+        <b>Exportar / Imprimir:</b>
+        <select id="excelAhorroMes"></select>
+        <select id="excelAhorroAnio"></select>
+        <button class="btn-excel" onclick="exportarAhorroExcel()">📥 Excel</button>
+        <button class="btn-print" onclick="imprimirAhorro()">🖨️ Imprimir</button>
+      </div>
+
+      <h4>Movimientos del Ahorro</h4>
+      <div style="overflow-x:auto;">
+        <table class="data-table" id="tablaAhorro">
+          <thead>
+            <tr><th>Recibo</th><th>Fecha</th><th>Concepto</th><th>Tipo</th><th>Monto</th><th>Acciones</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- USUARIOS -->
+    <section id="tab-usuarios" class="tab-content">
+      <h3>Gestión de Usuarios</h3>
+      <div id="usuariosSoloAdmin">
+        <div class="form-card">
+          <h4>Crear Usuario</h4>
+          <div class="form-grid">
+            <div class="form-group"><label>Usuario</label><input type="text" id="newUser"></div>
+            <div class="form-group"><label>Contraseña</label><input type="text" id="newPass"></div>
+            <div class="form-group">
+              <label>Rol</label>
+              <select id="newRol">
+                <option value="admin">Pastor (Administrador General)</option>
+                <option value="tesorero_general">Tesorero General</option>
+                <option value="tesorero_comite">Tesorero de Comité</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Comité (si aplica)</label><input type="text" id="newComite" placeholder="Ej: Misiones"></div>
+          </div>
+          <button class="btn-primary" id="btnCrearUser">Crear usuario</button>
+        </div>
+        <table class="data-table" id="tablaUsuarios">
+          <thead><tr><th>Usuario</th><th>Rol</th><th>Comité</th><th>Acciones</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- MODAL RECIBO -->
+<div id="reciboModal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close" id="btnCerrarRecibo">&times;</span>
+    <div id="reciboContenido"></div>
+    <button class="btn-primary" style="margin-top:14px; width:100%;" id="btnImprimir">Imprimir</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   CONTABILIDAD IGLESIA - v4 (estructura real por fondos)
+   ============================================================ */
+
+var DB_KEY = 'iglesia_contabilidad_v4';
+var DURACION_EDICION_MS = 2 * 60 * 60 * 1000;
+var session = null;
+
+/* Lista de fondos/comités de la iglesia */
+var FONDOS_DEFECTO = [
+  'Diáconos',
+  'Misiones',
+  'Damas',
+  'Evangelismo',
+  'Jóvenes',
+  'Obra Social',
+  'Escuela Dominical',
+  'Alabanza',
+  'Caballeros',
+  'Audiovisuales',
+  'Piso Iglesia',
+  'Intersección',
+  'Nueva Obra',
+  'Sonido',
+  'fondo pastoral',
+  'Diezmos',
+  'Fondo General'
+];
+
+/* ============ DB ============ */
+function loadDB() {
+  var raw = localStorage.getItem(DB_KEY);
+  return raw ? JSON.parse(raw) : null;
+}
+function saveDB(d) { localStorage.setItem(DB_KEY, JSON.stringify(d)); }
+
+function initDB() {
+  if (localStorage.getItem(DB_KEY)) return;
+  saveDB({
+    usuarios: [
+      { user: 'pastor', pass: 'pastor1201', rol: 'admin', comite: null },
+      { user: 'tesorero', pass: 'tesorero1202', rol: 'tesorero_general', comite: null },
+      { user: 'misiones', pass: 'misiones1204', rol: 'tesorero_comite', comite: 'Misiones' },
+      { user: 'damas', pass: 'damas1205', rol: 'tesorero_comite', comite: 'Damas' }
+    ],
+    libro: [],      // {id, numero, fecha, concepto, fondo, tipo, monto, usuario, creadoEn}
+    diezmos: [],    // {id, numero, fecha, concepto, monto, descuentos, estado, usuario, creadoEn}
+    ahorro: [],     // movimientos del ahorro pastor: {id, numero, fecha, concepto, tipo, monto, usuario, creadoEn}
+    cierres: [],
+    recibos: 0
+  });
+}
+
+/* ============ UTILIDADES ============ */
+function formatoMoneda(n) {
+  return '₡' + Math.round(Number(n) || 0).toLocaleString('es-CR');
+}
+function hoyISO() { return new Date().toISOString().slice(0,10); }
+
+/* ============ LOGIN ============ */
+function login() {
+  var user = document.getElementById('loginUser').value.trim();
+  var pass = document.getElementById('loginPass').value;
+  var db = loadDB();
+  if (!db) { document.getElementById('loginError').textContent = 'BD no inicializada.'; return; }
+  var u = db.usuarios.find(function(x){ return x.user === user && x.pass === pass; });
+  if (!u) { document.getElementById('loginError').textContent = 'Usuario o contraseña incorrectos'; return; }
+  session = u;
+  document.getElementById('loginError').textContent = '';
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('appScreen').classList.remove('hidden');
+
+  var rolLabel = { admin: 'Pastor (Administrador)', tesorero_general: 'Tesorero General', tesorero_comite: 'Tesorero de Comité' };
+  document.getElementById('currentUserLabel').textContent =
+    u.user + ' (' + rolLabel[u.rol] + (u.comite ? ' - ' + u.comite : '') + ')';
+
+  var esComite = (u.rol === 'tesorero_comite');
+  var esPastor = (u.rol === 'admin');
+
+  // Tabs prohibidas para comité
+  ['dashboard', 'libro', 'diezmos', 'ahorro', 'usuarios'].forEach(function(name){
+    var tab = document.querySelector('.tab[data-tab="' + name + '"]');
+    if (!tab) return;
+    if (esComite) tab.style.display = 'none';
+    else tab.style.display = 'inline-block';
+  });
+  // Ahorro solo Pastor
+  document.getElementById('tabAhorroBtn').style.display = esPastor ? 'inline-block' : 'none';
+  // Usuarios solo Pastor
+  var usuariosTab = document.querySelector('.tab[data-tab="usuarios"]');
+  if (usuariosTab) usuariosTab.style.display = esPastor ? 'inline-block' : 'none';
+  // Comité → solo su fondo, ir directo a Libro
+  if (esComite) {
+    document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+    document.querySelector('.tab[data-tab="libro"]').classList.add('active');
+    document.getElementById('tab-libro').classList.add('active');
+  }
+  // Mostrar campo Ahorro Pastor solo Pastor
+  document.getElementById('grupoPctAhorro').style.display = esPastor ? 'block' : 'none';
+
+  // Fechas por defecto
+  ['movFecha','diezmoFecha','ahorroFecha'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.value = hoyISO();
+  });
+
+  // Llenar selects de fondos
+  llenarSelectsFondos();
+
+  renderTodo();
+}
+
+function logout() {
+  session = null;
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('appScreen').classList.add('hidden');
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+}
+
+/* ============ PERMISOS ============ */
+function esPastor() { return session && session.rol === 'admin'; }
+function esTesoreroGeneral() { return session && session.rol === 'tesorero_general'; }
+function esComite() { return session && session.rol === 'tesorero_comite'; }
+function puedeEditarLibro() { return esPastor() || esTesoreroGeneral(); }
+function puedeEditarDiezmo() { return esPastor() || esTesoreroGeneral(); }
+function puedeVerAhorro() { return esPastor(); }
+
+function fondosVisibles() {
+  if (!session) return [];
+  if (esPastor() || esTesoreroGeneral()) return FONDOS_DEFECTO.slice();
+  if (esComite()) return [session.comite];
+  return [];
+}
+
+function puedeMoverFondo(fondo) {
+  if (!session) return false;
+  if (esPastor() || esTesoreroGeneral()) return true;
+  return esComite() && session.comite === fondo;
+}
+
+/* ============ NAVEGACIÓN ============ */
+function switchTab(name) {
+  if (!session) return;
+  if (esComite() && ['diezmos', 'ahorro', 'usuarios'].indexOf(name) !== -1) {
+    alert('No tienes acceso a esta sección.');
+    return;
+  }
+  if (name === 'ahorro' && !puedeVerAhorro()) { alert('Solo el Pastor.'); return; }
+  if (name === 'usuarios' && !esPastor()) { alert('Solo el Pastor.'); return; }
+
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.tab-content').forEach(function(t){ t.classList.remove('active'); });
+  var tabBtn = document.querySelector('.tab[data-tab="' + name + '"]');
+  if (tabBtn) tabBtn.classList.add('active');
+  var cont = document.getElementById('tab-' + name);
+  if (cont) cont.classList.add('active');
+  renderTodo();
+}
+
+/* ============ RECIBOS ============ */
+function generarReciboNum(db) {
+  var anio = new Date().getFullYear();
+  db.recibos = (db.recibos || 0) + 1;
+  var num = String(db.recibos);
+  while (num.length < 6) num = '0' + num;
+  return 'REC-' + anio + '-' + num;
+}
+
+function mostrarRecibo(r) {
+  var html = '<div class="recibo">' +
+    '<h2>⛪ IGLESIA PENTECOSTAL LATINOAMERICANA</h2>' +
+    '<h2>SEDE LIBERIA</h2>' +
+    '<div class="recibo-num">' + r.numero + '</div>' +
+    '<div class="linea"><span>Fecha:</span><b>' + r.fecha + '</b></div>' +
+    (r.fondo ? '<div class="linea"><span>Fondo:</span><b>' + r.fondo + '</b></div>' : '') +
+    '<div class="linea"><span>Tipo:</span><b>' + (r.tipo === 'ingreso' ? 'ENTRADA' : 'SALIDA') + '</b></div>' +
+    '<div class="linea"><span>Concepto:</span><b>' + r.concepto + '</b></div>' +
+    '<div class="linea"><span>Registrado por:</span><b>' + r.usuario + '</b></div>' +
+    '<div class="monto">' + formatoMoneda(r.monto) + '</div>' +
+    '</div>';
+  document.getElementById('reciboContenido').innerHTML = html;
+  document.getElementById('reciboModal').classList.remove('hidden');
+}
+
+function mostrarReciboDiezmoConDescuentos(r) {
+  var d = r.descuentos;
+  var html = '<div class="recibo">' +
+    '<h2>⛪ IGLESIA PENTECOSTAL LATINOAMERICANA</h2>' +
+    '<h2>SEDE LIBERIA - DIEZMOS</h2>' +
+    '<div class="recibo-num">' + r.numero + '</div>' +
+    '<div class="linea"><span>Fecha:</span><b>' + r.fecha + '</b></div>' +
+    '<div class="linea"><span>Concepto:</span><b>' + r.concepto + '</b></div>' +
+    '<div class="linea"><span>Registrado por:</span><b>' + r.usuario + '</b></div>' +
+    '<hr>' +
+    '<div class="linea"><span><b>Diezmo bruto:</b></span><b>' + formatoMoneda(d.bruto) + '</b></div>' +
+    '<div class="linea"><span>(-) Diezmo de Diezmos (10%):</span><span>' + formatoMoneda(d.diezmoDiezmos) + '</span></div>' +
+    '<div class="linea"><span>(-) Asomipel (6%):</span><span>' + formatoMoneda(d.asomipel) + '</span></div>' +
+    '<div class="linea"><span>(-) Fondo Nacional (' + d.pctNacional + '%):</span><span>' + formatoMoneda(d.fondoNacional) + '</span></div>' +
+    '<div class="linea"><span>(-) Fondo Local (' + d.pctLocal + '%):</span><span>' + formatoMoneda(d.fondoLocal) + '</span></div>' +
+    '<div class="linea"><span>(-) Ahorro Pastor (' + (d.pctAhorro || 30) + '%):</span><span>' + formatoMoneda(d.ahorroPastor) + '</span></div>' +
+    '<div class="monto" style="margin-top:12px;">NETO PASTOR: ' + formatoMoneda(d.netoPastor) + '</div>' +
+    '</div>';
+  document.getElementById('reciboContenido').innerHTML = html;
+  document.getElementById('reciboModal').classList.remove('hidden');
+}
+
+function cerrarRecibo() { document.getElementById('reciboModal').classList.add('hidden'); }
+
+/* ============ CÁLCULO DIEZMOS ============ */
+function calcularDescuentosDiezmo(monto, pctNacional, pctLocal, pctAhorro) {
+  if (typeof pctAhorro !== 'number' || isNaN(pctAhorro)) pctAhorro = 30;
+  var saldo = monto;
+  var dd = Math.round(saldo * 0.10); saldo -= dd;
+  var asomipel = Math.round(saldo * 0.06); saldo -= asomipel;
+  var nacional = Math.round(saldo * (pctNacional / 100)); saldo -= nacional;
+  var local = Math.round(saldo * (pctLocal / 100)); saldo -= local;
+  var ahorro = Math.round(saldo * (pctAhorro / 100)); saldo -= ahorro;
+  var netoPastor = Math.round(saldo);
+  return {
+    bruto: Math.round(monto),
+    diezmoDiezmos: dd, asomipel: asomipel,
+    fondoNacional: nacional, fondoLocal: local,
+    ahorroPastor: ahorro, netoPastor: netoPastor,
+    pctNacional: pctNacional, pctLocal: pctLocal, pctAhorro: pctAhorro
+  };
+}
+
+function actualizarPreviewDiezmo() {
+  var montoEl = document.getElementById('diezmoMonto');
+  var pcnEl = document.getElementById('pctNacional');
+  var pclEl = document.getElementById('pctLocal');
+  var pcaEl = document.getElementById('pctAhorro');
+  var prevEl = document.getElementById('previewDiezmo');
+  if (!montoEl || !prevEl) return;
+  var monto = parseFloat(montoEl.value);
+  var pcn = pcnEl ? parseFloat(pcnEl.value) : 5;
+  var pcl = pclEl ? parseFloat(pclEl.value) : 5;
+  var pca = (pcaEl && pcaEl.offsetParent !== null) ? parseFloat(pcaEl.value) : 30;
+  if (isNaN(pcn)) pcn = 5; if (isNaN(pcl)) pcl = 5; if (isNaN(pca)) pca = 30;
+  if (!monto || monto <= 0) { prevEl.innerHTML = ''; return; }
+  var d = calcularDescuentosDiezmo(monto, pcn, pcl, pca);
+  prevEl.innerHTML = '<div class="info" style="font-size:13px;">' +
+    '<b>Vista previa del cálculo:</b><br>' +
+    'Bruto: <b>' + formatoMoneda(d.bruto) + '</b><br>' +
+    '(-) Diezmo de Diezmos (10%): ' + formatoMoneda(d.diezmoDiezmos) + '<br>' +
+    '(-) Asomipel (6%): ' + formatoMoneda(d.asomipel) + '<br>' +
+    '(-) Fondo Nacional (' + d.pctNacional + '%): ' + formatoMoneda(d.fondoNacional) + '<br>' +
+    '(-) Fondo Local (' + d.pctLocal + '%): ' + formatoMoneda(d.fondoLocal) + '<br>' +
+    '(-) Ahorro Pastor (' + d.pctAhorro + '%): ' + formatoMoneda(d.ahorroPastor) + '<br>' +
+    '<b>Neto Pastor: ' + formatoMoneda(d.netoPastor) + '</b>' +
+    '</div>';
+}
+
+/* ============ LIBRO GENERAL ============ */
+function registrarMovimiento() {
+  if (!puedeEditarLibro()) { alert('No tienes permiso.'); return; }
+  var fecha = document.getElementById('movFecha').value;
+  var fondo = document.getElementById('movFondo').value;
+  var concepto = document.getElementById('movConcepto').value.trim();
+  var tipo = document.getElementById('movTipo').value;
+  var monto = parseInt(document.getElementById('movMonto').value, 10);
+
+  if (!fecha) { alert('Ingresa fecha'); return; }
+  if (!fondo) { alert('Selecciona fondo'); return; }
+  if (!concepto) { alert('Ingresa concepto'); return; }
+  if (!monto || monto <= 0) { alert('Monto inválido'); return; }
+
+  var db = loadDB();
+  var recibo = {
+    numero: generarReciboNum(db),
+    fecha: fecha, fondo: fondo, concepto: concepto,
+    tipo: tipo, monto: monto, usuario: session.user
+  };
+  db.libro.push(Object.assign({}, recibo, { id: Date.now() + Math.random(), creadoEn: new Date().toISOString() }));
+  saveDB(db);
+
+  document.getElementById('movMonto').value = '';
+  document.getElementById('movConcepto').value = '';
+  mostrarRecibo(recibo);
+  renderTodo();
+}
+
+function saldoFondo(db, fondo) {
+  var ing = db.libro.filter(function(m){ return m.fondo === fondo && m.tipo === 'ingreso'; })
+    .reduce(function(s,m){ return s + m.monto; }, 0);
+  var egr = db.libro.filter(function(m){ return m.fondo === fondo && m.tipo === 'egreso'; })
+    .reduce(function(s,m){ return s + m.monto; }, 0);
+  return ing - egr;
+}
+
+function renderLibro() {
+  var db = loadDB(); if (!db) return;
+  var filtroEl = document.getElementById('filtroLibro');
+  var filtro = filtroEl ? filtroEl.value.toLowerCase() : '';
+  var fondoFiltro = document.getElementById('filtroLibroFondo').value;
+  var tipoFiltro = document.getElementById('filtroLibroTipo').value;
+  var tbody = document.querySelector('#tablaLibro tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  var visibles = fondosVisibles();
+  var movs = db.libro.filter(function(m){ return visibles.indexOf(m.fondo) !== -1; });
+
+  var ing = 0, egr = 0;
+  movs.slice().reverse().filter(function(m){
+    if (filtro && m.concepto.toLowerCase().indexOf(filtro) < 0 &&
+        m.fondo.toLowerCase().indexOf(filtro) < 0 &&
+        m.numero.toLowerCase().indexOf(filtro) < 0) return false;
+    if (fondoFiltro && m.fondo !== fondoFiltro) return false;
+    if (tipoFiltro && m.tipo !== tipoFiltro) return false;
+    return true;
+  }).forEach(function(m){
+    if (m.tipo === 'ingreso') ing += m.monto; else egr += m.monto;
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + m.numero + '</td>' +
+      '<td>' + m.fecha + '</td>' +
+      '<td>' + m.fondo + '</td>' +
+      '<td>' + m.concepto + '</td>' +
+      '<td class="num pos">' + (m.tipo === 'ingreso' ? formatoMoneda(m.monto) : '') + '</td>' +
+      '<td class="num neg">' + (m.tipo === 'egreso' ? formatoMoneda(m.monto) : '') + '</td>' +
+      '<td>' + m.usuario + '</td>' +
+      '<td>' +
+      '<button class="btn-small btn-view" onclick="verReciboLibro(\'' + m.id + '\')">Recibo</button>' +
+      '<button class="btn-small btn-edit" onclick="editarLibro(\'' + m.id + '\')">Editar</button>' +
+      '<button class="btn-small btn-del" onclick="eliminarLibro(\'' + m.id + '\')">Eliminar</button>' +
+      '</td>';
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('totalesLibro').innerHTML =
+    '<b>Entradas:</b> ' + formatoMoneda(ing) + ' | <b>Salidas:</b> ' + formatoMoneda(egr) +
+    ' | <b>Saldo del período:</b> ' + formatoMoneda(ing - egr);
+}
+
+function verReciboLibro(id) {
+  var m = loadDB().libro.find(function(x){ return String(x.id) === String(id); });
+  if (m) mostrarRecibo(m);
+}
+function editarLibro(id) {
+  var db = loadDB();
+  var m = db.libro.find(function(x){ return String(x.id) === String(id); });
+  if (!m) return;
+  if (!puedeMoverFondo(m.fondo)) { alert('Sin permiso.'); return; }
+  var nm = prompt('Nuevo monto:', m.monto); if (nm === null) return;
+  var nc = prompt('Nuevo concepto:', m.concepto); if (nc === null) return;
+  m.monto = parseInt(nm, 10) || m.monto;
+  m.concepto = nc || m.concepto;
+  saveDB(db); renderTodo();
+}
+function eliminarLibro(id) {
+  var db = loadDB();
+  var m = db.libro.find(function(x){ return String(x.id) === String(id); });
+  if (!m) return;
+  if (!puedeMoverFondo(m.fondo)) { alert('Sin permiso.'); return; }
+  if (!confirm('¿Eliminar movimiento?')) return;
+  db.libro = db.libro.filter(function(x){ return String(x.id) !== String(id); });
+  saveDB(db); renderTodo();
+}
+
+/* ============ DIEZMOS ============ */
+function registrarDiezmo() {
+  if (!puedeEditarDiezmo()) { alert('Solo Pastor o Tesorero General.'); return; }
+  var fecha = document.getElementById('diezmoFecha').value;
+  var concepto = document.getElementById('diezmoConcepto').value.trim();
+  var monto = parseInt(document.getElementById('diezmoMonto').value, 10);
+  var pctNacional = parseFloat(document.getElementById('pctNacional').value);
+  var pctLocal = parseFloat(document.getElementById('pctLocal').value);
+  var pcaEl = document.getElementById('pctAhorro');
+  var pctAhorro = (pcaEl && pcaEl.offsetParent !== null) ? parseFloat(pcaEl.value) : 30;
+
+  if (!fecha) { alert('Ingresa fecha'); return; }
+  if (!concepto) { alert('Ingresa concepto'); return; }
+  if (!monto || monto <= 0) { alert('Monto inválido'); return; }
+  if (isNaN(pctNacional) || pctNacional < 0 || pctNacional > 100) { alert('% Fondo Nacional inválido'); return; }
+  if (isNaN(pctLocal) || pctLocal < 0 || pctLocal > 100) { alert('% Fondo Local inválido'); return; }
+  if (isNaN(pctAhorro) || pctAhorro < 0 || pctAhorro > 100) { alert('% Ahorro inválido'); return; }
+
+  var desc = calcularDescuentosDiezmo(monto, pctNacional, pctLocal, pctAhorro);
+  var db = loadDB();
+  var recibo = {
+    numero: generarReciboNum(db),
+    fecha: fecha, concepto: concepto, monto: monto, usuario: session.user
+  };
+  db.diezmos.push(Object.assign({}, recibo, {
+    id: Date.now() + Math.random(),
+    estado: 'pendiente',
+    creadoEn: new Date().toISOString(),
+    descuentos: desc
+  }));
+  saveDB(db);
+
+  document.getElementById('diezmoConcepto').value = '';
+  document.getElementById('diezmoMonto').value = '';
+  document.getElementById('previewDiezmo').innerHTML = '';
+
+  mostrarReciboDiezmoConDescuentos(Object.assign({}, recibo, { descuentos: desc }));
+  renderTodo();
+}
+
+function renderDiezmos() {
+  var db = loadDB(); if (!db) return;
+  var tbody = document.querySelector('#tablaDiezmos tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  var t = { bruto:0, dd:0, asomipel:0, nac:0, loc:0, aho:0, neto:0 };
+
+  db.diezmos.slice().reverse().forEach(function(d){
+    var desc = d.descuentos || calcularDescuentosDiezmo(d.monto, 5, 5, 30);
+    if (d.estado === 'pendiente') {
+      t.bruto += desc.bruto; t.dd += desc.diezmoDiezmos; t.asomipel += desc.asomipel;
+      t.nac += desc.fondoNacional; t.loc += desc.fondoLocal;
+      t.aho += desc.ahorroPastor; t.neto += desc.netoPastor;
+    }
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + d.numero + '</td>' +
+      '<td>' + d.fecha + '</td>' +
+      '<td>' + d.concepto + '</td>' +
+      '<td class="num">' + formatoMoneda(desc.bruto) + '</td>' +
+      '<td class="num">' + formatoMoneda(desc.diezmoDiezmos) + '</td>' +
+      '<td class="num">' + formatoMoneda(desc.asomipel) + '</td>' +
+      '<td class="num">' + formatoMoneda(desc.fondoNacional) + '</td>' +
+      '<td class="num">' + formatoMoneda(desc.fondoLocal) + '</td>' +
+      '<td class="num">' + formatoMoneda(desc.ahorroPastor) + '</td>' +
+      '<td class="num pos">' + formatoMoneda(desc.netoPastor) + '</td>' +
+      '<td><span class="tag ' + (d.estado === 'pendiente' ? 'pendiente' : 'cerrado') + '">' + d.estado + '</span></td>' +
+      '<td>' +
+      '<button class="btn-small btn-view" onclick="verReciboDiezmo(\'' + d.id + '\')">Recibo</button>' +
+      '<button class="btn-small btn-del" onclick="eliminarDiezmo(\'' + d.id + '\')">Eliminar</button>' +
+      '</td>';
+    tbody.appendChild(tr);
+  });
+
+  var totalEl = document.getElementById('totalDiezmosPendientes');
+  if (totalEl) {
+    totalEl.innerHTML = '<b>Pendientes:</b> ' +
+      'Bruto: ' + formatoMoneda(t.bruto) + ' | ' +
+      'D. Diezmos: ' + formatoMoneda(t.dd) + ' | ' +
+      'Asomipel: ' + formatoMoneda(t.asomipel) + ' | ' +
+      'F. Nac.: ' + formatoMoneda(t.nac) + ' | ' +
+      'F. Loc.: ' + formatoMoneda(t.loc) + ' | ' +
+      'Ahorro: ' + formatoMoneda(t.aho) + ' | ' +
+      '<b>Neto Pastor: ' + formatoMoneda(t.neto) + '</b>';
+  }
+}
+
+function verReciboDiezmo(id) {
+  var d = loadDB().diezmos.find(function(x){ return String(x.id) === String(id); });
+  if (!d) return;
+  var desc = d.descuentos || calcularDescuentosDiezmo(d.monto, 5, 5, 30);
+  mostrarReciboDiezmoConDescuentos(Object.assign({}, d, { descuentos: desc }));
+}
+function eliminarDiezmo(id) {
+  var db = loadDB();
+  var d = db.diezmos.find(function(x){ return String(x.id) === String(id); });
+  if (!d) return;
+  if (d.estado === 'cerrado' && !esPastor()) { alert('Diezmo cerrado.'); return; }
+  if (!confirm('¿Eliminar diezmo?')) return;
+  db.diezmos = db.diezmos.filter(function(x){ return String(x.id) !== String(id); });
+  saveDB(db); renderTodo();
+}
+
+/* ============ CIERRE MENSUAL ============ */
+function cerrarMes() {
+  if (!puedeEditarLibro()) { alert('Solo Pastor o Tesorero General.'); return; }
+  var mes = document.getElementById('cierreMes').value;
+  var anio = document.getElementById('cierreAnio').value;
+  var prefijo = anio + '-' + mes;
+
+  var db = loadDB();
+  var pend = db.diezmos.filter(function(d){ return d.estado === 'pendiente' && d.fecha.indexOf(prefijo) === 0; });
+  if (pend.length === 0) {
+    document.getElementById('cierreResultado').innerHTML = '<p class="info">No hay diezmos pendientes para ' + prefijo + '.</p>';
+    return;
+  }
+
+  var t = { bruto:0, dd:0, asomipel:0, nac:0, loc:0, aho:0, neto:0 };
+  pend.forEach(function(d){
+    var x = d.descuentos || calcularDescuentosDiezmo(d.monto, 5, 5, 30);
+    t.bruto += x.bruto; t.dd += x.diezmoDiezmos; t.asomipel += x.asomipel;
+    t.nac += x.fondoNacional; t.loc += x.fondoLocal;
+    t.aho += x.ahorroPastor; t.neto += x.netoPastor;
+  });
+
+  var diasMes = new Date(parseInt(anio), parseInt(mes), 0).getDate();
+  var fechaCierre = prefijo + '-' + String(diasMes).padStart(2, '0');
+
+  // Ingreso bruto al fondo "Diezmos"
+  db.libro.push({
+    id: Date.now() + Math.random(),
+    numero: generarReciboNum(db),
+    fecha: fechaCierre, fondo: 'Diezmos',
+    concepto: 'Cierre mensual diezmos ' + prefijo,
+    tipo: 'ingreso', monto: t.bruto, usuario: session.user,
+    creadoEn: new Date().toISOString()
+  });
+
+  // Egresos por cada concepto
+  var egresos = [
+    { concepto: 'Diezmo de Diezmos ' + prefijo, monto: t.dd },
+    { concepto: 'Asomipel ' + prefijo,          monto: t.asomipel },
+    { concepto: 'Fondo Nacional ' + prefijo,    monto: t.nac },
+    { concepto: 'Fondo Local ' + prefijo,       monto: t.loc },
+    { concepto: 'Neto Pastor ' + prefijo,       monto: t.neto }
+  ];
+  egresos.forEach(function(e){
+    if (e.monto <= 0) return;
+    db.libro.push({
+      id: Date.now() + Math.random() + Math.random(),
+      numero: generarReciboNum(db),
+      fecha: fechaCierre, fondo: 'Diezmos',
+      concepto: e.concepto,
+      tipo: 'egreso', monto: e.monto, usuario: session.user,
+      creadoEn: new Date().toISOString()
+    });
+  });
+
+  // Ahorro Pastor: se ingresa al ahorro privado
+  if (t.aho > 0) {
+    db.ahorro.push({
+      id: Date.now() + Math.random(),
+      numero: generarReciboNum(db),
+      fecha: fechaCierre, concepto: 'Ahorro Pastor ' + prefijo,
+      tipo: 'ingreso', monto: t.aho, usuario: session.user,
+      creadoEn: new Date().toISOString()
+    });
+  }
+
+  // Marcar diezmos como cerrados
+  db.diezmos.forEach(function(d){
+    if (d.estado === 'pendiente' && d.fecha.indexOf(prefijo) === 0) d.estado = 'cerrado';
+  });
+
+  db.cierres.push({ mes: prefijo, totales: t, fecha: new Date().toISOString(), usuario: session.user });
+  saveDB(db);
+
+  document.getElementById('cierreResultado').innerHTML =
+    '<div class="info">' +
+    '✅ <b>Cierre ' + prefijo + ' realizado.</b><br>' +
+    'Diezmos procesados: <b>' + pend.length + '</b><br>' +
+    'Bruto: <b>' + formatoMoneda(t.bruto) + '</b><br>' +
+    'Diezmo de Diezmos: ' + formatoMoneda(t.dd) + '<br>' +
+    'Asomipel: ' + formatoMoneda(t.asomipel) + '<br>' +
+    'Fondo Nacional: ' + formatoMoneda(t.nac) + '<br>' +
+    'Fondo Local: ' + formatoMoneda(t.loc) + '<br>' +
+    'Ahorro Pastor (privado): ' + formatoMoneda(t.aho) + '<br>' +
+    'Neto Pastor: ' + formatoMoneda(t.neto) +
+    '</div>';
+
+  renderTodo();
+}
+
+/* ============ AHORRO PASTOR ============ */
+function registrarEgresoAhorro() {
+  if (!puedeVerAhorro()) { alert('Solo el Pastor.'); return; }
+  var fecha = document.getElementById('ahorroFecha').value;
+  var concepto = document.getElementById('ahorroConcepto').value.trim();
+  var monto = parseInt(document.getElementById('ahorroMonto').value, 10);
+  if (!fecha) { alert('Ingresa fecha'); return; }
+  if (!concepto) { alert('Ingresa concepto'); return; }
+  if (!monto || monto <= 0) { alert('Monto inválido'); return; }
+
+  var db = loadDB();
+  db.ahorro.push({
+    id: Date.now() + Math.random(),
+    numero: generarReciboNum(db),
+    fecha: fecha, concepto: concepto,
+    tipo: 'egreso', monto: monto, usuario: session.user,
+    creadoEn: new Date().toISOString()
+  });
+  saveDB(db);
+  document.getElementById('ahorroConcepto').value = '';
+  document.getElementById('ahorroMonto').value = '';
+  renderTodo();
+}
+
+function renderAhorro() {
+  if (!puedeVerAhorro()) return;
+  var db = loadDB(); if (!db) return;
+  var ing = db.ahorro.filter(function(a){ return a.tipo === 'ingreso'; }).reduce(function(s,a){ return s + a.monto; }, 0);
+  var egr = db.ahorro.filter(function(a){ return a.tipo === 'egreso'; }).reduce(function(s,a){ return s + a.monto; }, 0);
+
+  document.getElementById('ahorroSaldo').textContent = formatoMoneda(ing - egr);
+  document.getElementById('ahorroIngresos').textContent = formatoMoneda(ing);
+  document.getElementById('ahorroEgresos').textContent = formatoMoneda(egr);
+
+  var tbody = document.querySelector('#tablaAhorro tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  db.ahorro.slice().reverse().forEach(function(a){
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + a.numero + '</td>' +
+      '<td>' + a.fecha + '</td>' +
+      '<td>' + a.concepto + '</td>' +
+      '<td><span class="tag ' + a.tipo + '">' + (a.tipo === 'ingreso' ? 'Entrada' : 'Salida') + '</span></td>' +
+      '<td class="num ' + (a.tipo === 'ingreso' ? 'pos' : 'neg') + '">' + formatoMoneda(a.monto) + '</td>' +
+      '<td><button class="btn-small btn-del" onclick="eliminarAhorro(\'' + a.id + '\')">Eliminar</button></td>';
+    tbody.appendChild(tr);
+  });
+}
+
+function eliminarAhorro(id) {
+  if (!puedeVerAhorro()) return;
+  var db = loadDB();
+  if (!confirm('¿Eliminar movimiento?')) return;
+  db.ahorro = db.ahorro.filter(function(a){ return String(a.id) !== String(id); });
+  saveDB(db); renderTodo();
+}
+
+/* ============ PANEL / FONDOS ============ */
+function renderPanel() {
+  var db = loadDB(); if (!db) return;
+  var visibles = fondosVisibles();
+
+  // Tarjetas resumen
+  var totalIng = 0, totalEgr = 0;
+  db.libro.forEach(function(m){
+    if (visibles.indexOf(m.fondo) < 0) return;
+    if (m.tipo === 'ingreso') totalIng += m.monto; else totalEgr += m.monto;
+  });
+  var dp = db.diezmos.filter(function(d){ return d.estado === 'pendiente'; }).reduce(function(s,d){ return s + d.monto; }, 0);
+
+  var cards = document.getElementById('summaryCards');
+  if (cards) {
+    var html =
+      '<div class="card ingreso"><h4>Total Entradas</h4><div class="value">' + formatoMoneda(totalIng) + '</div></div>' +
+      '<div class="card egreso"><h4>Total Salidas</h4><div class="value">' + formatoMoneda(totalEgr) + '</div></div>' +
+      '<div class="card saldo"><h4>Saldo General</h4><div class="value">' + formatoMoneda(totalIng - totalEgr) + '</div></div>' +
+      '<div class="card"><h4>Diezmos Pendientes</h4><div class="value">' + formatoMoneda(dp) + '</div></div>';
+    if (puedeVerAhorro()) {
+      var ai = db.ahorro.filter(function(a){ return a.tipo === 'ingreso'; }).reduce(function(s,a){ return s + a.monto; }, 0);
+      var ae = db.ahorro.filter(function(a){ return a.tipo === 'egreso'; }).reduce(function(s,a){ return s + a.monto; }, 0);
+      html += '<div class="card ahorro"><h4>Ahorro Pastor</h4><div class="value">' + formatoMoneda(ai - ae) + '</div></div>';
+    }
+    cards.innerHTML = html;
+  }
+
+  // Grid de fondos
+  var grid = document.getElementById('fondosGrid');
+  if (grid) {
+    grid.innerHTML = '';
+    var totalFondos = 0;
+    visibles.forEach(function(f){
+      var saldo = saldoFondo(db, f);
+      totalFondos += saldo;
+      var movs = db.libro.filter(function(m){ return m.fondo === f; }).length;
+      var card = document.createElement('div');
+      card.className = 'fondo-card' + (saldo < 0 ? ' negativo' : '');
+      card.onclick = function(){ verDetalleFondo(f); };
+      card.innerHTML = '<h4>' + f + '</h4>' +
+        '<div class="balance">' + formatoMoneda(saldo) + '</div>' +
+        '<div class="detalle">' + movs + ' movimiento(s)</div>';
+      grid.appendChild(card);
+    });
+
+    // Agregar tarjeta de total
+    var cardTot = document.createElement('div');
+    cardTot.className = 'fondo-card';
+    cardTot.style.borderTopColor = '#f39c12';
+    cardTot.innerHTML = '<h4>TOTAL GENERAL</h4><div class="balance">' + formatoMoneda(totalFondos) + '</div><div class="detalle">Suma de todos los fondos</div>';
+    grid.appendChild(cardTot);
+  }
+}
+
+function verDetalleFondo(fondo) {
+  var db = loadDB();
+  var movs = db.libro.filter(function(m){ return m.fondo === fondo; }).slice().reverse();
+  var html = '<div class="form-card"><h4>Fondo: ' + fondo + '</h4>';
+  if (movs.length === 0) {
+    html += '<p class="info">Sin movimientos.</p>';
+  } else {
+    html += '<div style="overflow-x:auto;"><table class="data-table"><thead><tr>' +
+      '<th>Recibo</th><th>Fecha</th><th>Concepto</th><th>Entradas</th><th>Salidas</th><th>Usuario</th></tr></thead><tbody>';
+    movs.forEach(function(m){
+      html += '<tr><td>' + m.numero + '</td><td>' + m.fecha + '</td><td>' + m.concepto + '</td>' +
+        '<td class="num pos">' + (m.tipo === 'ingreso' ? formatoMoneda(m.monto) : '') + '</td>' +
+        '<td class="num neg">' + (m.tipo === 'egreso' ? formatoMoneda(m.monto) : '') + '</td>' +
+        '<td>' + m.usuario + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+  }
+  html += '</div>';
+  document.getElementById('detalleFondo').innerHTML = html;
+}
+
+/* ============ USUARIOS ============ */
+function renderUsuarios() {
+  if (!esPastor()) return;
+  var db = loadDB(); if (!db) return;
+  var tbody = document.querySelector('#tablaUsuarios tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  db.usuarios.forEach(function(u){
+    var rolTxt = { admin:'Pastor (Admin)', tesorero_general:'Tesorero General', tesorero_comite:'Tesorero de Comité' }[u.rol] || u.rol;
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + u.user + '</td><td>' + rolTxt + '</td><td>' + (u.comite || '-') + '</td>' +
+      '<td>' + (u.user === 'pastor' ? '(protegido)' :
+        '<button class="btn-small btn-del" onclick="eliminarUsuario(\'' + u.user + '\')">Eliminar</button>') + '</td>';
+    tbody.appendChild(tr);
+  });
+}
+
+function crearUsuario() {
+  if (!esPastor()) { alert('Solo el Pastor.'); return; }
+  var user = document.getElementById('newUser').value.trim();
+  var pass = document.getElementById('newPass').value.trim();
+  var rol = document.getElementById('newRol').value;
+  var comite = document.getElementById('newComite').value.trim() || null;
+  if (!user || !pass) { alert('Usuario y contraseña requeridos'); return; }
+  var db = loadDB();
+  if (db.usuarios.find(function(x){ return x.user === user; })) { alert('Ya existe.'); return; }
+  db.usuarios.push({ user: user, pass: pass, rol: rol, comite: comite });
+  saveDB(db);
+  document.getElementById('newUser').value = '';
+  document.getElementById('newPass').value = '';
+  document.getElementById('newComite').value = '';
+  renderUsuarios();
+}
+
+function eliminarUsuario(user) {
+  if (!esPastor()) return;
+  if (user === 'pastor') { alert('No se puede eliminar al Pastor.'); return; }
+  if (!confirm('¿Eliminar ' + user + '?')) return;
+  var db = loadDB();
+  db.usuarios = db.usuarios.filter(function(u){ return u.user !== user; });
+  saveDB(db); renderUsuarios();
+}
+
+/* ============ SELECTS ============ */
+function llenarSelectsFondos() {
+  var visibles = fondosVisibles();
+  // Select de registro (solo fondos donde puede mover)
+  var sel = document.getElementById('movFondo');
+  if (sel) {
+    sel.innerHTML = '';
+    visibles.forEach(function(f){
+      if (puedeMoverFondo(f)) sel.add(new Option(f, f));
+    });
+  }
+  // Select de filtro (todos los visibles + "Todos")
+  var sf = document.getElementById('filtroLibroFondo');
+  if (sf) {
+    sf.innerHTML = '';
+    sf.add(new Option('Todos los fondos', ''));
+    visibles.forEach(function(f){ sf.add(new Option(f, f)); });
+  }
+  // Select de exportación
+  var se = document.getElementById('excelLibroFondo');
+  if (se) {
+    se.innerHTML = '';
+    se.add(new Option('Todos los fondos', ''));
+    visibles.forEach(function(f){ se.add(new Option(f, f)); });
+  }
+}
+
+function llenarSelectoresFecha() {
+  var meses = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+  var anioActual = new Date().getFullYear();
+  ['excelLibroMes','excelDiezmosMes','excelAhorroMes','cierreMes'].forEach(function(id){
+    var sel = document.getElementById(id);
+    if (!sel || sel.options.length > 0) return;
+    meses.forEach(function(m){ sel.add(new Option(m, m)); });
+    sel.value = String(new Date().getMonth() + 1).padStart(2, '0');
+  });
+  ['excelLibroAnio','excelDiezmosAnio','excelAhorroAnio','cierreAnio'].forEach(function(id){
+    var sel = document.getElementById(id);
+    if (!sel || sel.options.length > 0) return;
+    for (var a = anioActual - 3; a <= anioActual + 1; a++) sel.add(new Option(a, a));
+    sel.value = anioActual;
+  });
+}
+
+/* ============ EXPORTAR CSV / IMPRIMIR ============ */
+function descargarCSV(nombre, filas) {
+  var csv = filas.map(function(fila){
+    return fila.map(function(celda){
+      var txt = String(celda == null ? '' : celda);
+      if (txt.indexOf('"') >= 0) txt = txt.replace(/"/g, '""');
+      if (/[",;\n]/.test(txt)) txt = '"' + txt + '"';
+      return txt;
+    }).join(';');
+  }).join('\r\n');
+  var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = nombre;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function abrirVentanaImpresion(html) {
+  var w = window.open('', '_blank');
+  w.document.write('<html><head><title>Imprimir</title><style>body{font-family:Arial,sans-serif;padding:20px;}h1{text-align:center;color:#182848;}h2{text-align:center;}table{border-collapse:collapse;width:100%;font-size:12px;}th,td{border:1px solid #ccc;padding:6px;}th{background:#182848;color:white;}tfoot td{background:#f7f9fc;font-weight:bold;}</style></head><body>' + html + '</body></html>');
+  w.document.close();
+  setTimeout(function(){ w.print(); }, 400);
+}
+
+function exportarLibroExcel() {
+  var mes = document.getElementById('excelLibroMes').value;
+  var anio = document.getElementById('excelLibroAnio').value;
+  var fondo = document.getElementById('excelLibroFondo').value;
+  var prefijo = anio + '-' + mes;
+  var db = loadDB();
+  var visibles = fondosVisibles();
+  var movs = db.libro.filter(function(m){
+    return visibles.indexOf(m.fondo) !== -1 && m.fecha.indexOf(prefijo) === 0 &&
+      (!fondo || m.fondo === fondo);
+  });
+  if (movs.length === 0) { alert('Sin movimientos.'); return; }
+
+  var filas = [
+    ['IGLESIA PENTECOSTAL LATINOAMERICANA LIBERIA'],
+    ['LIBRO GENERAL - ' + prefijo + (fondo ? ' - ' + fondo : '')],
+    ['Generado:', new Date().toLocaleString('es-CR'), 'Por:', session.user],
+    [],
+    ['Recibo','Fecha','Fondo','Concepto','Entradas','Salidas','Usuario']
+  ];
+  var ing = 0, egr = 0;
+  movs.forEach(function(m){
+    filas.push([m.numero, m.fecha, m.fondo, m.concepto,
+      m.tipo === 'ingreso' ? m.monto : '', m.tipo === 'egreso' ? m.monto : '', m.usuario]);
+    if (m.tipo === 'ingreso') ing += m.monto; else egr += m.monto;
+  });
+  filas.push([]);
+  filas.push(['','','','TOTAL ENTRADAS', ing, '']);
+  filas.push(['','','','TOTAL SALIDAS', '', egr]);
+  filas.push(['','','','SALDO', ing - egr, '']);
+  descargarCSV('LibroGeneral_' + prefijo + '.csv', filas);
+}
+
+function imprimirLibro() {
+  var mes = document.getElementById('excelLibroMes').value;
+  var anio = document.getElementById('excelLibroAnio').value;
+  var fondo = document.getElementById('excelLibroFondo').value;
+  var prefijo = anio + '-' + mes;
+  var db = loadDB();
+  var visibles = fondosVisibles();
+  var movs = db.libro.filter(function(m){
+    return visibles.indexOf(m.fondo) !== -1 && m.fecha.indexOf(prefijo) === 0 &&
+      (!fondo || m.fondo === fondo);
+  });
+  if (movs.length === 0) { alert('Sin movimientos.'); return; }
+
+  var ing = 0, egr = 0;
+  var filas = movs.map(function(m){
+    if (m.tipo === 'ingreso') ing += m.monto; else egr += m.monto;
+    return '<tr><td>' + m.numero + '</td><td>' + m.fecha + '</td><td>' + m.fondo + '</td><td>' + m.concepto + '</td>' +
+      '<td style="text-align:right;">' + (m.tipo === 'ingreso' ? formatoMoneda(m.monto) : '') + '</td>' +
+      '<td style="text-align:right;">' + (m.tipo === 'egreso' ? formatoMoneda(m.monto) : '') + '</td>' +
+      '<td>' + m.usuario + '</td></tr>';
+  }).join('');
+
+  var html =
+    '<h1>Iglesia Pentecostal Latinoamericana Liberia</h1>' +
+    '<h2>Libro General - ' + prefijo + (fondo ? ' - ' + fondo : '') + '</h2>' +
+    '<p style="text-align:right;">Generado: ' + new Date().toLocaleString('es-CR') + ' por ' + session.user + '</p>' +
+    '<table><thead><tr><th>Recibo</th><th>Fecha</th><th>Fondo</th><th>Concepto</th><th>Entradas</th><th>Salidas</th><th>Usuario</th></tr></thead>' +
+    '<tbody>' + filas + '</tbody>' +
+    '<tfoot>' +
+    '<tr><td colspan="4" style="text-align:right;">Total Entradas:</td><td style="text-align:right;">' + formatoMoneda(ing) + '</td><td></td><td></td></tr>' +
+    '<tr><td colspan="4" style="text-align:right;">Total Salidas:</td><td></td><td style="text-align:right;">' + formatoMoneda(egr) + '</td><td></td></tr>' +
+    '<tr><td colspan="4" style="text-align:right;">SALDO:</td><td style="text-align:right;">' + formatoMoneda(ing - egr) + '</td><td></td><td></td></tr>' +
+    '</tfoot></table>';
+  abrirVentanaImpresion(html);
+}
+
+function exportarDiezmosExcel() {
+  var mes = document.getElementById('excelDiezmosMes').value;
+  var anio = document.getElementById('excelDiezmosAnio').value;
+  var prefijo = anio + '-' + mes;
+  var db = loadDB();
+  var dz = db.diezmos.filter(function(d){ return d.fecha.indexOf(prefijo) === 0; });
+  if (dz.length === 0) { alert('Sin diezmos.'); return; }
+
+  var filas = [
+    ['DIEZMOS - ' + prefijo],
+    [],
+    ['Recibo','Fecha','Concepto','Bruto','D. Diezmos','Asomipel','F. Nac.','F. Loc.','Ahorro P.','Neto Pastor','Estado']
+  ];
+  dz.forEach(function(d){
+    var x = d.descuentos || calcularDescuentosDiezmo(d.monto, 5, 5, 30);
+    filas.push([d.numero, d.fecha, d.concepto, x.bruto, x.diezmoDiezmos, x.asomipel,
+      x.fondoNacional, x.fondoLocal, x.ahorroPastor, x.netoPastor, d.estado]);
+  });
+  descargarCSV('Diezmos_' + prefijo + '.csv', filas);
+}
+
+function imprimirDiezmos() {
+  var mes = document.getElementById('excelDiezmosMes').value;
+  var anio = document.getElementById('excelDiezmosAnio').value;
+  var prefijo = anio + '-' + mes;
+  var db = loadDB();
+  var dz = db.diezmos.filter(function(d){ return d.fecha.indexOf(prefijo) === 0; });
+  if (dz.length === 0) { alert('Sin diezmos.'); return; }
+  var filas = dz.map(function(d){
+    var x = d.descuentos || calcularDescuentosDiezmo(d.monto, 5, 5, 30);
+    return '<tr><td>' + d.numero + '</td><td>' + d.fecha + '</td><td>' + d.concepto + '</td>' +
+      '<td style="text-align:right;">' + formatoMoneda(x.bruto) + '</td>' +
+      '<td style="text-align:right;">' + formatoMoneda(x.diezmoDiezmos) + '</td>' +
+      '<td style="text-align:right;">' + formatoMoneda(x.asomipel) + '</td>' +
+      '<td style="text-align:right;">' + formatoMoneda(x.fondoNacional) + '</td>' +
+      '<td style="text-align:right;">' + formatoMoneda(x.fondoLocal) + '</td>' +
+      '<td style="text-align:right;">' + formatoMoneda(x.ahorroPastor) + '</td>' +
+      '<td style="text-align:right;">' + formatoMoneda(x.netoPastor) + '</td>' +
+      '<td>' + d.estado + '</td></tr>';
+  }).join('');
+  abrirVentanaImpresion('<h1>Diezmos - ' + prefijo + '</h1>' +
+    '<table><thead><tr><th>Recibo</th><th>Fecha</th><th>Concepto</th><th>Bruto</th><th>D. Dz.</th><th>Asomipel</th><th>F.Nac.</th><th>F.Loc.</th><th>Ahorro</th><th>Neto</th><th>Estado</th></tr></thead><tbody>' + filas + '</tbody></table>');
+}
+
+function exportarAhorroExcel() {
+  if (!puedeVerAhorro()) { alert('Solo el Pastor.'); return; }
+  var mes = document.getElementById('excelAhorroMes').value;
+  var anio = document.getElementById('excelAhorroAnio').value;
+  var prefijo = anio + '-' + mes;
+  var db = loadDB();
+  var movs = db.ahorro.filter(function(a){ return a.fecha.indexOf(prefijo) === 0; });
+  if (movs.length === 0) { alert('Sin movimientos.'); return; }
+  var filas = [['AHORRO PASTOR - ' + prefijo], [], ['Recibo','Fecha','Concepto','Tipo','Monto']];
+  movs.forEach(function(a){ filas.push([a.numero, a.fecha, a.concepto, a.tipo, a.monto]); });
+  descargarCSV('AhorroPastor_' + prefijo + '.csv', filas);
+}
+
+function imprimirAhorro() {
+  if (!puedeVerAhorro()) { alert('Solo el Pastor.'); return; }
+  var mes = document.getElementById('excelAhorroMes').value;
+  var anio = document.getElementById('excelAhorroAnio').value;
+  var prefijo = anio + '-' + mes;
+  var db = loadDB();
+  var movs = db.ahorro.filter(function(a){ return a.fecha.indexOf(prefijo) === 0; });
+  if (movs.length === 0) { alert('Sin movimientos.'); return; }
+  var filas = movs.map(function(a){
+    return '<tr><td>' + a.numero + '</td><td>' + a.fecha + '</td><td>' + a.concepto + '</td>' +
+      '<td>' + (a.tipo === 'ingreso' ? 'Entrada' : 'Salida') + '</td>' +
+      '<td style="text-align:right;">' + formatoMoneda(a.monto) + '</td></tr>';
+  }).join('');
+  abrirVentanaImpresion('<h1>Ahorro Pastor - ' + prefijo + '</h1>' +
+    '<table><thead><tr><th>Recibo</th><th>Fecha</th><th>Concepto</th><th>Tipo</th><th>Monto</th></tr></thead><tbody>' + filas + '</tbody></table>');
+}
+
+/* ============ RENDER GLOBAL ============ */
+function renderTodo() {
+  if (!session) return;
+  if (esComite()) {
+    renderLibro();
+    return;
+  }
+  renderPanel();
+  renderLibro();
+  renderDiezmos();
+  if (puedeVerAhorro()) renderAhorro();
+  if (esPastor()) renderUsuarios();
+}
+
+/* ============ INIT ============ */
+window.addEventListener('DOMContentLoaded', function() {
+  console.log('Iniciando sistema v4...');
+  initDB();
+
+  function on(id, evento, fn) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener(evento, fn);
+    else console.warn('⚠️ Falta #' + id);
+  }
+
+  on('btnLogin', 'click', login);
+  on('btnLogout', 'click', logout);
+  on('loginPass', 'keypress', function(e){ if (e.key === 'Enter') login(); });
+  on('btnRegMov', 'click', registrarMovimiento);
+  on('filtroLibro', 'input', renderLibro);
+  on('filtroLibroFondo', 'change', renderLibro);
+  on('filtroLibroTipo', 'change', renderLibro);
+  on('btnRegDiezmo', 'click', registrarDiezmo);
+  on('btnCierre', 'click', cerrarMes);
+  on('btnRegEgresoAhorro', 'click', registrarEgresoAhorro);
+  on('btnCrearUser', 'click', crearUsuario);
+  on('btnCerrarRecibo', 'click', cerrarRecibo);
+  on('btnImprimir', 'click', function(){ window.print(); });
+  on('diezmoMonto', 'input', actualizarPreviewDiezmo);
+  on('pctNacional', 'input', actualizarPreviewDiezmo);
+  on('pctLocal', 'input', actualizarPreviewDiezmo);
+  on('pctAhorro', 'input', actualizarPreviewDiezmo);
+
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click', function(){ switchTab(this.dataset.tab); });
+  });
+
+  llenarSelectoresFecha();
+  console.log('Sistema listo.');
+});
+</script>
+</body>
+</html>
