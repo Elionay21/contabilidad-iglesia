@@ -701,7 +701,7 @@ function actualizarPreviewDiezmo() {
 
 /* ============ LIBRO GENERAL ============ */
 function registrarMovimiento() {
-  if (!puedeEditarLibro()) { alert('Sin permiso.'); return; }
+  if (!esPastor() && !esTesoreroGeneral() && !esComite()) { alert('Sin permiso.'); return; }
   var fecha = document.getElementById('movFecha').value;
   var fondo = document.getElementById('movFondo').value;
   var concepto = document.getElementById('movConcepto').value.trim();
@@ -711,6 +711,8 @@ function registrarMovimiento() {
   if (!fondo) { alert('Fondo requerido'); return; }
   if (!concepto) { alert('Concepto requerido'); return; }
   if (!monto || monto <= 0) { alert('Monto inválido'); return; }
+
+  if (esComite() && !puedeMoverFondo(fondo)) { alert('Sin permiso.'); return; }
 
   var db = loadDB();
   var recibo = {
