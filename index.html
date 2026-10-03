@@ -471,12 +471,16 @@ function escucharFirestore() {
     var totalCloud = (cloudData.libro||[]).length + (cloudData.diezmos||[]).length + (cloudData.ahorro||[]).length;
     var totalLocal = localData ? ((localData.libro||[]).length + (localData.diezmos||[]).length + (localData.ahorro||[]).length) : -1;
 
-    if (totalCloud !== totalLocal || !localData) {
-      localStorage.setItem(DB_KEY, JSON.stringify(cloudData));
-      console.log('🔄 Datos actualizados desde la nube');
-      actualizarEstadoNube('🔄 Actualizado');
-      if (session) renderTodo();
-    }
+    // PROTECCIÓN: nunca sobreescribir con menos datos
+if (localData && totalCloud < totalLocal) {
+  console.log('⚠️ Nube con menos datos que local. Subiendo local para proteger.');
+  window.__firebase.setDoc(fbDocRef, localData);
+} else if (totalCloud !== totalLocal || !localData) {
+  localStorage.setItem(DB_KEY, JSON.stringify(cloudData));
+  console.log('🔄 Datos actualizados desde la nube');
+  actualizarEstadoNube('🔄 Actualizado');
+  if (session) renderTodo();
+}
   }, function(err){
     console.error('❌ Error escuchando:', err);
   });
