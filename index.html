@@ -385,10 +385,14 @@ var DURACION_EDICION_MS = 2 * 60 * 60 * 1000;
 var session = null;
 
 var FONDOS_DEFECTO = [
-  'Diaconos','Misiones','Damas','Evangelismo','Jóvenes','Obra Social',
+  'Diáconos','Misiones','Damas','Evangelismo','Jóvenes','Obra Social',
   'Escuela Dominical','Alabanza','Caballeros','Audiovisuales','Piso Iglesia',
-  'Interseccion','Nueva Obra','Fondo Pastor','Sonido','Diezmos','Fondo General'
+  'Intersección','Nueva Obra','Sonido','Diezmos','Fondo General'
 ];
+
+/* Fondo virtual que NO aparece en selects ni se puede registrar directamente.
+   Solo se muestra como tarjeta resumen sumando los saldos de todos los fondos de comités. */
+var FONDO_CONSOLIDADO = '__CONSOLIDADO__';
 
 /* ============ FIREBASE ============ */
 var firebaseConfig = {
@@ -1030,25 +1034,48 @@ function renderPanel() {
   }
 
   var grid = document.getElementById('fondosGrid');
-  if (grid) {
-    grid.innerHTML = '';
-    var totalFondos = 0;
-    visibles.forEach(function(f){
-      var s = saldoFondo(db, f);
-      totalFondos += s;
-      var movs = db.libro.filter(function(m){ return m.fondo === f; }).length;
-      var card = document.createElement('div');
-      card.className = 'fondo-card' + (s < 0 ? ' negativo' : '');
-      card.onclick = function(){ verDetalleFondo(f); };
-      card.innerHTML = '<h4>' + f + '</h4><div class="balance">' + formatoMoneda(s) + '</div><div class="detalle">' + movs + ' movimiento(s)</div>';
-      grid.appendChild(card);
-    });
-    var cTot = document.createElement('div');
-    cTot.className = 'fondo-card';
-    cTot.style.borderTopColor = '#f39c12';
-    cTot.innerHTML = '<h4>TOTAL GENERAL</h4><div class="balance">' + formatoMoneda(totalFondos) + '</div><div class="detalle">Suma de todos los fondos</div>';
-    grid.appendChild(cTot);
-  }
+if (grid) {
+  grid.innerHTML = '';
+
+  // Tarjeta 1: FONDO CONSOLIDADO (suma de TODOS los fondos de comités, no incluye Diezmos)
+  var fondosComites = visibles.filter(function(f){ return f !== 'Diezmos' && f !== 'Fondo General'; });
+  var totalConsolidado = 0;
+  var movsConsolidado = 0;
+  fondosComites.forEach(function(f){
+    totalConsolidado += saldoFondo(db, f);
+    movsConsolidado += db.libro.filter(function(m){ return m.fondo === f; }).length;
+  });
+  var cardCons = document.createElement('div');
+  cardCons.className = 'fondo-card';
+  cardCons.style.borderTopColor = '#27ae60';
+  cardCons.style.background = '#f0f9f4';
+  cardCons.style.cursor = 'pointer';
+  cardCons.onclick = function(){ verDetalleConsolidado(fondosComites); };
+  cardCons.innerHTML = '<h4>👥 TOTAL DE USUARIOS (Consolidado)</h4>' +
+    '<div class="balance" style="color:#27ae60;">' + formatoMoneda(totalConsolidado) + '</div>' +
+    '<div class="detalle">Suma de los ' + fondosComites.length + ' fondos · ' + movsConsolidado + ' movimiento(s)</div>';
+  grid.appendChild(cardCons);
+
+  // Tarjetas de cada fondo
+  var totalFondos = 0;
+  visibles.forEach(function(f){
+    var s = saldoFondo(db, f);
+    totalFondos += s;
+    var movs = db.libro.filter(function(m){ return m.fondo === f; }).length;
+    var card = document.createElement('div');
+    card.className = 'fondo-card' + (s < 0 ? ' negativo' : '');
+    card.onclick = function(){ verDetalleFondo(f); };
+    card.innerHTML = '<h4>' + f + '</h4><div class="balance">' + formatoMoneda(s) + '</div><div class="detalle">' + movs + ' movimiento(s)</div>';
+    grid.appendChild(card);
+  });
+
+  // Tarjeta final: TOTAL GENERAL
+  var cTot = document.createElement('div');
+  cTot.className = 'fondo-card';
+  cTot.style.borderTopColor = '#f39c12';
+  cTot.innerHTML = '<h4>TOTAL GENERAL</h4><div class="balance">' + formatoMoneda(totalFondos) + '</div><div class="detalle">Suma de todos los fondos</div>';
+  grid.appendChild(cTot);
+}
 }
 
 function verDetalleFondo(fondo) {
@@ -1070,7 +1097,34 @@ function verDetalleFondo(fondo) {
   html += '</div>';
   document.getElementById('detalleFondo').innerHTML = html;
 }
+function verDetalleConsolidado(fondos) {
+  var db = loadDB();
+  var html = '<div class="form-card"><h4>👥 Detalle Consolidado - Todos los Usuarios</h4>';
+  html += '<div style="overflow-x:auto;"><table class="data-table"><thead><tr>' +
+    '<th>Fondo</th><th>Entradas</th><th>Salidas</th><th>Saldo</th></tr></thead><tbody>';
 
+  var tIng = 0, tEgr = 0, tSaldo = 0;
+  fondos.forEach(function(f){
+    var ing = db.libro.filter(function(m){ return m.fondo === f && m.tipo === 'ingreso'; }).reduce(function(s,m){ return s + m.monto; }, 0);
+    var egr = db.libro.filter(function(m){ return m.fondo === f && m.tipo === 'egreso'; }).reduce(function(s,m){ return s + m.monto; }, 0);
+    var saldo = ing - egr;
+    tIng += ing; tEgr += egr; tSaldo += saldo;
+    html += '<tr><td>' + f + '</td>' +
+      '<td class="num pos">' + formatoMoneda(ing) + '</td>' +
+      '<td class="num neg">' + formatoMoneda(egr) + '</td>' +
+      '<td class="num"><b>' + formatoMoneda(saldo) + '</b></td></tr>';
+  });
+
+  html += '<tr style="background:#f0f9f4; font-weight:bold;">' +
+    '<td>TOTAL</td>' +
+    '<td class="num pos">' + formatoMoneda(tIng) + '</td>' +
+    '<td class="num neg">' + formatoMoneda(tEgr) + '</td>' +
+    '<td class="num">' + formatoMoneda(tSaldo) + '</td></tr>';
+
+  html += '</tbody></table></div></div>';
+  document.getElementById('detalleFondo').innerHTML = html;
+}
+  
 /* ============ USUARIOS ============ */
 function renderUsuarios() {
   if (!esPastor()) return;
