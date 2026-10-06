@@ -350,9 +350,36 @@ h4 { margin-bottom: 10px; font-size: 15px; }
                 <option value="tesorero_general">Tesorero General</option>
                 <option value="tesorero_comite">Tesorero de Comité</option>
               </select>
+              <script>
+  document.addEventListener('change', function(e){
+    if (e.target && e.target.id === 'newRol') {
+      var grupoComite = document.getElementById('newComite').parentElement;
+      grupoComite.style.display = (e.target.value === 'tesorero_comite') ? 'block' : 'none';
+    }
+  });
+</script>
             </div>
-            <div class="form-group"><label>Comité (si aplica)</label><input type="text" id="newComite" placeholder="Ej: Misiones"></div>
-          </div>
+            <div class="form-group">
+  <label>Comité / Fondo (si aplica)</label>
+  <select id="newComite">
+    <option value="">— Ninguno —</option>
+    <option value="Diáconos">Diáconos</option>
+    <option value="Misiones">Misiones</option>
+    <option value="Damas">Damas</option>
+    <option value="Evangelismo">Evangelismo</option>
+    <option value="Jóvenes">Jóvenes</option>
+    <option value="Obra Social">Obra Social</option>
+    <option value="Escuela Dominical">Escuela Dominical</option>
+    <option value="Alabanza">Alabanza</option>
+    <option value="Caballeros">Caballeros</option>
+    <option value="Audiovisuales">Audiovisuales</option>
+    <option value="Piso Iglesia">Piso Iglesia</option>
+    <option value="Intersección">Intersección</option>
+    <option value="Nueva Obra">Nueva Obra</option>
+    <option value="Sonido">Sonido</option>
+    <option value="Fondo General">Fondo General</option>
+  </select>
+</div>
           <button class="btn-primary" id="btnCrearUser">Crear usuario</button>
         </div>
         <table class="data-table" id="tablaUsuarios">
@@ -1146,7 +1173,7 @@ function crearUsuario() {
   var user = document.getElementById('newUser').value.trim();
   var pass = document.getElementById('newPass').value.trim();
   var rol = document.getElementById('newRol').value;
-  var comite = document.getElementById('newComite').value.trim() || null;
+  var comite = document.getElementById('newComite').value || null;
   if (!user || !pass) { alert('Usuario y contraseña requeridos'); return; }
   var db = loadDB();
   if (db.usuarios.find(function(x){ return x.user === user; })) { alert('Ya existe.'); return; }
