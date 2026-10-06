@@ -360,8 +360,11 @@ h4 { margin-bottom: 10px; font-size: 15px; }
 </script>
             </div>
             <div class="form-group">
-  <label>Comité / Fondo (si aplica)</label>
-  <select id="newComite">
+  <label>Comité / Fondo</label>
+  <input type="text" id="newComite" list="listaFondos" placeholder="Escribe o elige un fondo">
+  <datalist id="listaFondos"></datalist>
+  <small style="color:#7f8c8d; font-size:11px;">Si escribes uno nuevo, se creará automáticamente.</small>
+</div>
     <option value="">— Ninguno —</option>
     <option value="Diáconos">Diáconos</option>
     <option value="Misiones">Misiones</option>
@@ -522,17 +525,42 @@ function loadDB() {
   var raw = localStorage.getItem(DB_KEY);
   return raw ? JSON.parse(raw) : null;
 }
-
+function migrarDB() {
+  var db = loadDB();
+  if (!db) return;
+  // Si ya existe la lista de fondos, no hacer nada
+  if (db.fondos && db.fondos.length > 0) return;
+  // Crear la lista base + cualquier comité de usuarios que no esté
+  var base = [
+    'Diáconos','Misiones','Damas','Evangelismo','Jóvenes','Obra Social',
+    'Escuela Dominical','Alabanza','Caballeros','Audiovisuales','Piso Iglesia',
+    'Intersección','Nueva Obra','Sonido','Diezmos','Fondo General'
+  ];
+  db.usuarios.forEach(function(u){
+    if (u.comite && base.indexOf(u.comite) === -1) base.push(u.comite);
+  });
+  db.fondos = base;
+  saveDB(db);
+  console.log('🔧 Migración: lista de fondos creada');
+}
+  
 function initDB() {
   if (localStorage.getItem(DB_KEY)) return;
   var inicial = {
     usuarios: [
       { user: 'pastor', pass: 'pastor1201', rol: 'admin', comite: null },
       { user: 'tesorero', pass: 'tesorero1202', rol: 'tesorero_general', comite: null },
+      { user: 'diaconos', pass: 'diaconos1203', rol: 'tesorero_comite', comite: 'Diáconos' },
       { user: 'misiones', pass: 'misiones1204', rol: 'tesorero_comite', comite: 'Misiones' },
-      { user: 'damas', pass: '1205', rol: 'tesorero_comite', comite: 'Damas' }
+      { user: 'damas', pass: 'damas1205', rol: 'tesorero_comite', comite: 'Damas' }
     ],
-    libro: [], diezmos: [], ahorro: [], cierres: [], recibos: 0
+    libro: [], diezmos: [], ahorro: [], cierres: [], recibos: 0,
+    // 🔥 NUEVO: lista de fondos, ahora dinámica
+    fondos: [
+      'Diáconos','Misiones','Damas','Evangelismo','Jóvenes','Obra Social',
+      'Escuela Dominical','Alabanza','Caballeros','Audiovisuales','Piso Iglesia',
+      'Intersección','Nueva Obra','Sonido','Diezmos','Fondo General'
+    ]
   };
   localStorage.setItem(DB_KEY, JSON.stringify(inicial));
 }
@@ -585,7 +613,21 @@ function login() {
   });
 
   llenarSelectsFondos();
+function llenarSelectsFondos() {
+  var db = loadDB();
+  var listaFondos = (db && db.fondos && db.fondos.length > 0) ? db.fondos : FONDOS_DEFECTO;
 
+  // 🔥 NUEVO: Llenar el datalist de fondos para el formulario de usuarios
+  var dl = document.getElementById('listaFondos');
+  if (dl) {
+    dl.innerHTML = '';
+    listaFondos.forEach(function(f){ dl.appendChild(new Option(f, f)); });
+  }
+
+  var visibles = fondosVisibles();
+  // ... el resto de la función queda igual
+}
+  
   // Suscribirse a la nube
   if (fbListo && fbDocRef) {
     window.__firebase.setDoc(fbDocRef, db).catch(function(e){ console.warn(e); });
@@ -614,7 +656,9 @@ function puedeVerAhorro() { return esPastor(); }
 
 function fondosVisibles() {
   if (!session) return [];
-  if (esPastor() || esTesoreroGeneral()) return FONDOS_DEFECTO.slice();
+  var db = loadDB();
+  var lista = (db && db.fondos && db.fondos.length > 0) ? db.fondos : FONDOS_DEFECTO;
+  if (esPastor() || esTesoreroGeneral()) return lista.slice();
   if (esComite()) return [session.comite];
   return [];
 }
@@ -1183,6 +1227,9 @@ function crearUsuario() {
   document.getElementById('newPass').value = '';
   document.getElementById('newComite').value = '';
   renderUsuarios();
+  llenarSelectsFondos();
+  renderPanel();
+  renderLibro();
 }
 function eliminarUsuario(user) {
   if (!esPastor()) return;
@@ -1401,6 +1448,7 @@ function renderTodo() {
 /* ============ INIT ============ */
 window.addEventListener('DOMContentLoaded', function() {
   console.log('Iniciando sistema v4 con Firebase...');
+  migrarDB();
   initDB();
 
   function on(id, evento, fn) {
