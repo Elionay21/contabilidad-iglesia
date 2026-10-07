@@ -1018,47 +1018,49 @@ function renderPanel() {
   });
   var dp = db.diezmos.filter(function(d){ return d.estado === 'pendiente'; }).reduce(function(s,d){ return s + d.monto; }, 0);
 
-  var cards = document.getElementById('summaryCards');
+    var cards = document.getElementById('summaryCards');
   if (cards) {
+    // Calcular el consolidado de comités (sin Diezmos ni Fondo General)
+    var fondosComites = visibles.filter(function(f){
+      var n = normalizar(f);
+      return n !== normalizar('Diezmos') && n !== normalizar('Fondo General');
+    });
+    var totalConsolidado = 0;
+    var movsConsolidado = 0;
+    fondosComites.forEach(function(f){
+      totalConsolidado += saldoFondo(db, f);
+      movsConsolidado += db.libro.filter(function(m){ return normalizar(m.fondo) === normalizar(f); }).length;
+    });
+
     var html =
       '<div class="card ingreso"><h4>Total Entradas</h4><div class="value">' + formatoMoneda(totalIng) + '</div></div>' +
       '<div class="card egreso"><h4>Total Salidas</h4><div class="value">' + formatoMoneda(totalEgr) + '</div></div>' +
       '<div class="card saldo"><h4>Saldo General</h4><div class="value">' + formatoMoneda(totalIng - totalEgr) + '</div></div>' +
       '<div class="card"><h4>Diezmos Pendientes</h4><div class="value">' + formatoMoneda(dp) + '</div></div>';
+
+    // 👥 Tarjeta consolidada de comités (solo para Pastor y Tesorero General)
+    if (!esComite()) {
+      html += '<div class="card" style="border-color:#27ae60; background:#f0f9f4; cursor:pointer;" onclick="verDetalleConsolidado(fondosComites)">' +
+        '<h4>👥 Total Usuarios (Consolidado)</h4>' +
+        '<div class="value" style="color:#27ae60;">' + formatoMoneda(totalConsolidado) + '</div>' +
+        '<div style="font-size:11px;color:#7f8c8d;margin-top:4px;">' + fondosComites.length + ' comités · ' + movsConsolidado + ' mov.</div>' +
+        '</div>';
+    }
+
+    // Ahorro Pastor (solo el Pastor)
     if (puedeVerAhorro()) {
       var ai = db.ahorro.filter(function(a){ return a.tipo === 'ingreso'; }).reduce(function(s,a){ return s + a.monto; }, 0);
       var ae = db.ahorro.filter(function(a){ return a.tipo === 'egreso'; }).reduce(function(s,a){ return s + a.monto; }, 0);
       html += '<div class="card ahorro"><h4>Ahorro Pastor</h4><div class="value">' + formatoMoneda(ai - ae) + '</div></div>';
     }
+
     cards.innerHTML = html;
   }
 
     var grid = document.getElementById('fondosGrid');
   if (grid) {
     grid.innerHTML = '';
-
-    // 🔥 TARJETA CONSOLIDADA: suma de todos los fondos de comités (sin Diezmos ni Fondo General)
-    if (!esComite()) {
-      var fondosComites = visibles.filter(function(f){
-        var n = normalizar(f);
-        return n !== normalizar('Diezmos') && n !== normalizar('Fondo General');
-      });
-      var totalConsolidado = 0;
-      var movsConsolidado = 0;
-      fondosComites.forEach(function(f){
-        totalConsolidado += saldoFondo(db, f);
-        movsConsolidado += db.libro.filter(function(m){ return normalizar(m.fondo) === normalizar(f); }).length;
-      });
-      var cardCons = document.createElement('div');
-      cardCons.className = 'fondo-card';
-      cardCons.style.borderTopColor = '#27ae60';
-      cardCons.style.background = '#f0f9f4';
-      cardCons.onclick = function(){ verDetalleConsolidado(fondosComites); };
-      cardCons.innerHTML = '<h4>👥 TOTAL DE USUARIOS (Consolidado)</h4>' +
-        '<div class="balance" style="color:#27ae60;">' + formatoMoneda(totalConsolidado) + '</div>' +
-        '<div class="detalle">Suma de los ' + fondosComites.length + ' comités · ' + movsConsolidado + ' movimiento(s)</div>';
-      grid.appendChild(cardCons);
-    }
+    
 
     // Tarjetas de cada fondo
     var totalFondos = 0;
