@@ -614,7 +614,17 @@ function puedeMoverFondo(fondo) {
   }
   return false;
 }
-
+function puedeEliminar(mov) {
+  if (!session || !mov) return false;
+  if (esPastor() || esTesoreroGeneral()) return true;
+  if (esComite()) {
+    if (!puedeMoverFondo(mov.fondo)) return false;
+    if (!mov.creadoEn) return false;
+    var antiguedad = Date.now() - new Date(mov.creadoEn).getTime();
+    return antiguedad <= DURACION_EDICION_MS;
+  }
+  return false;
+}
 /* NAVEGACIÓN */
 function switchTab(name) {
   if (!session) return;
@@ -805,10 +815,21 @@ function eliminarLibro(id) {
   var db = loadDB();
   var m = db.libro.find(function(x){ return String(x.id) === String(id); });
   if (!m) return;
-  if (!puedeMoverFondo(m.fondo)) { alert('Sin permiso.'); return; }
-  if (!confirm('¿Eliminar?')) return;
+
+  if (!puedeEliminar(m)) {
+    if (esComite()) {
+      alert('No puedes eliminar este movimiento.\n\nLos tesoreros de comité solo pueden eliminar sus movimientos dentro de las 2 horas posteriores a crearlos.\n\nPasado ese tiempo, solo el Pastor o el Tesorero General pueden hacerlo.');
+    } else {
+      alert('Sin permiso para eliminar este movimiento.');
+    }
+    return;
+  }
+
+  if (!confirm('¿Eliminar este movimiento?\n\nRecibo: ' + m.numero + '\nFondo: ' + m.fondo + '\nMonto: ' + formatoMoneda(m.monto))) return;
+
   db.libro = db.libro.filter(function(x){ return String(x.id) !== String(id); });
-  saveDB(db); renderTodo();
+  saveDB(db);
+  renderTodo();
 }
 
 /* DIEZMOS */
