@@ -633,7 +633,9 @@ function llenarSelectsFondos() {
     window.__firebase.setDoc(fbDocRef, db).catch(function(e){ console.warn(e); });
     escucharFirestore();
   }
-
+  // Llenar los selects de fondos según el usuario actual
+  llenarSelectsFondos();
+  
   renderTodo();
 }
 
