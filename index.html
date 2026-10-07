@@ -1033,9 +1033,34 @@ function renderPanel() {
     cards.innerHTML = html;
   }
 
-  var grid = document.getElementById('fondosGrid');
+    var grid = document.getElementById('fondosGrid');
   if (grid) {
     grid.innerHTML = '';
+
+    // 🔥 TARJETA CONSOLIDADA: suma de todos los fondos de comités (sin Diezmos ni Fondo General)
+    if (!esComite()) {
+      var fondosComites = visibles.filter(function(f){
+        var n = normalizar(f);
+        return n !== normalizar('Diezmos') && n !== normalizar('Fondo General');
+      });
+      var totalConsolidado = 0;
+      var movsConsolidado = 0;
+      fondosComites.forEach(function(f){
+        totalConsolidado += saldoFondo(db, f);
+        movsConsolidado += db.libro.filter(function(m){ return normalizar(m.fondo) === normalizar(f); }).length;
+      });
+      var cardCons = document.createElement('div');
+      cardCons.className = 'fondo-card';
+      cardCons.style.borderTopColor = '#27ae60';
+      cardCons.style.background = '#f0f9f4';
+      cardCons.onclick = function(){ verDetalleConsolidado(fondosComites); };
+      cardCons.innerHTML = '<h4>👥 TOTAL DE USUARIOS (Consolidado)</h4>' +
+        '<div class="balance" style="color:#27ae60;">' + formatoMoneda(totalConsolidado) + '</div>' +
+        '<div class="detalle">Suma de los ' + fondosComites.length + ' comités · ' + movsConsolidado + ' movimiento(s)</div>';
+      grid.appendChild(cardCons);
+    }
+
+    // Tarjetas de cada fondo
     var totalFondos = 0;
     visibles.forEach(function(f){
       var s = saldoFondo(db, f);
@@ -1047,6 +1072,8 @@ function renderPanel() {
       card.innerHTML = '<h4>' + f + '</h4><div class="balance">' + formatoMoneda(s) + '</div><div class="detalle">' + movs + ' movimiento(s)</div>';
       grid.appendChild(card);
     });
+
+    // Tarjeta de TOTAL GENERAL
     if (!esComite()) {
       var cTot = document.createElement('div');
       cTot.className = 'fondo-card';
@@ -1076,7 +1103,34 @@ function verDetalleFondo(fondo) {
   html += '</div>';
   document.getElementById('detalleFondo').innerHTML = html;
 }
+function verDetalleConsolidado(fondos) {
+  var db = loadDB();
+  var html = '<div class="form-card"><h4>👥 Detalle Consolidado - Todos los Usuarios</h4>';
+  html += '<div style="overflow-x:auto;"><table class="data-table"><thead><tr>' +
+    '<th>Fondo</th><th>Entradas</th><th>Salidas</th><th>Saldo</th></tr></thead><tbody>';
 
+  var tIng = 0, tEgr = 0, tSaldo = 0;
+  fondos.forEach(function(f){
+    var ing = db.libro.filter(function(m){ return normalizar(m.fondo) === normalizar(f) && m.tipo === 'ingreso'; }).reduce(function(s,m){ return s + m.monto; }, 0);
+    var egr = db.libro.filter(function(m){ return normalizar(m.fondo) === normalizar(f) && m.tipo === 'egreso'; }).reduce(function(s,m){ return s + m.monto; }, 0);
+    var saldo = ing - egr;
+    tIng += ing; tEgr += egr; tSaldo += saldo;
+    html += '<tr><td>' + f + '</td>' +
+      '<td class="num pos">' + formatoMoneda(ing) + '</td>' +
+      '<td class="num neg">' + formatoMoneda(egr) + '</td>' +
+      '<td class="num"><b>' + formatoMoneda(saldo) + '</b></td></tr>';
+  });
+
+  html += '<tr style="background:#f0f9f4; font-weight:bold;">' +
+    '<td>TOTAL CONSOLIDADO</td>' +
+    '<td class="num pos">' + formatoMoneda(tIng) + '</td>' +
+    '<td class="num neg">' + formatoMoneda(tEgr) + '</td>' +
+    '<td class="num">' + formatoMoneda(tSaldo) + '</td></tr>';
+
+  html += '</tbody></table></div></div>';
+  document.getElementById('detalleFondo').innerHTML = html;
+}
+  
 /* USUARIOS */
 function renderUsuarios() {
   if (!esPastor()) return;
