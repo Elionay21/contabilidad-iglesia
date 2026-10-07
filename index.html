@@ -31,7 +31,7 @@ body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #eef2f7; color: 
 .btn-print { background: #8e44ad; color: white; padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
 .btn-small:disabled { opacity: .4; cursor: not-allowed; }
 .error { color: #e74c3c; font-size: 13px; margin-top: 10px; text-align: center; }
-.hint { margin-top: 16px; text-align: center; color: #95a5a6; font-size: 12px; line-height: 1.6; }
+.hint { margin-top: 16px; text-align: center; color: #bdc3c7; font-size: 11px; }
 
 .topbar { background: #182848; color: white; padding: 8px 20px; display: flex; justify-content: space-between; align-items: center; min-height: 70px; flex-wrap: wrap; gap: 10px; }
 .topbar-left { display: flex; align-items: center; gap: 12px; }
@@ -82,17 +82,15 @@ h4 { margin-bottom: 10px; font-size: 15px; }
 
 .info { background: #e7f3ff; color: #0c5460; padding: 12px 14px; border-radius: 6px; margin-bottom: 14px; font-size: 13px; }
 .info.ahorro { background: #f4ecf7; color: #6c3483; border-left: 4px solid #8e44ad; }
-.info.nube { background: #e8f8f5; color: #0e6251; border-left: 4px solid #27ae60; font-size: 12px; }
 .total-line { font-size: 13px; margin-top: 10px; padding: 12px; background: #f7f9fc; border-radius: 6px; }
 
-.fondos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.fondos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-bottom: 20px; }
 .fondo-card { background: white; padding: 16px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.06); border-top: 4px solid #4b6cb7; cursor: pointer; transition: transform .15s; }
 .fondo-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.1); }
 .fondo-card h4 { margin-bottom: 8px; font-size: 13px; color: #4a5568; text-transform: uppercase; }
 .fondo-card .balance { font-size: 22px; font-weight: 700; color: #182848; }
 .fondo-card .detalle { margin-top: 8px; font-size: 11px; color: #7f8c8d; }
 .fondo-card.negativo .balance { color: #e74c3c; }
-.fondo-card.ahorro { border-color: #8e44ad; background: #faf5fc; }
 
 .modal { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
 .modal-content { background: white; padding: 24px; border-radius: 12px; max-width: 560px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto; }
@@ -119,7 +117,6 @@ h4 { margin-bottom: 10px; font-size: 15px; }
 }
 </style>
 
-<!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -128,7 +125,6 @@ h4 { margin-bottom: 10px; font-size: 15px; }
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="loginScreen" class="login-container">
   <div class="login-box">
     <img src="logo.png" alt="Logo" class="logo-login" onerror="this.style.display='none'">
@@ -144,13 +140,10 @@ h4 { margin-bottom: 10px; font-size: 15px; }
     </div>
     <button class="btn-primary" id="btnLogin" style="width:100%;">Ingresar</button>
     <p id="loginError" class="error"></p>
-    <div class="hint" style="margin-top:20px; color:#bdc3c7; font-size:11px;">
-  ⛪ "Un Señor, una fe, un bautismo"
-</div>
+    <div class="hint">🙏 "Un Señor, una fe, un bautismo"</div>
   </div>
 </div>
 
-<!-- APP -->
 <div id="appScreen" class="hidden">
   <header class="topbar">
     <div class="topbar-left">
@@ -164,7 +157,7 @@ h4 { margin-bottom: 10px; font-size: 15px; }
     </div>
   </header>
 
- <nav class="tabs">
+  <nav class="tabs">
     <button class="tab active" data-tab="dashboard">📊 Panel</button>
     <button class="tab" data-tab="libro">📖 Libro General</button>
     <button class="tab" data-tab="diezmos">🙏 Diezmos</button>
@@ -173,12 +166,11 @@ h4 { margin-bottom: 10px; font-size: 15px; }
   </nav>
 
   <main>
-
     <section id="tab-dashboard" class="tab-content active">
       <h3>Panel General</h3>
       <div class="cards" id="summaryCards"></div>
       <h3>Fondos de la Iglesia</h3>
-      <p class="info">Cada tarjeta muestra el saldo actual del fondo. Los saldos se calculan automáticamente desde el Libro General.</p>
+      <p class="info">Los saldos se calculan automáticamente desde el Libro General. Cada usuario nuevo crea su propia tarjeta.</p>
       <div id="fondosGrid" class="fondos-grid"></div>
       <h3>Detalle de Fondo Seleccionado</h3>
       <div id="detalleFondo"></div>
@@ -187,7 +179,6 @@ h4 { margin-bottom: 10px; font-size: 15px; }
     <section id="tab-libro" class="tab-content">
       <h3>Libro General Principal</h3>
       <p class="info">Todos los movimientos de la iglesia. Cada movimiento pertenece a un fondo/comité.</p>
-
       <div class="form-card">
         <h4>Registrar Movimiento</h4>
         <div class="form-grid">
@@ -242,7 +233,7 @@ h4 { margin-bottom: 10px; font-size: 15px; }
       <h3>Diezmos</h3>
       <p class="info">
         <b>Descuentos:</b> Diezmo de Diezmos 10%, Asomipel 6%, Ahorro Pastor 30% (Pastor puede modificarlo),
-        Fondo Nacional y Fondo Local editables (por defecto 5%). Al cerrar el mes se ingresa todo al Libro General.
+        Fondo Nacional y Fondo Local editables (por defecto 5%).
       </p>
 
       <div class="form-card">
@@ -297,9 +288,7 @@ h4 { margin-bottom: 10px; font-size: 15px; }
       <h3>💼 Ahorro Pastor</h3>
       <p class="info ahorro">
         <b>Fondo privado del Pastor.</b> Solo el Pastor (Administrador) tiene acceso a esta sección.
-        Se alimenta automáticamente del cierre de diezmos y permite registrar egresos personales.
       </p>
-
       <div class="cards">
         <div class="card ahorro"><h4>Ahorro Acumulado</h4><div class="value" id="ahorroSaldo">₡0</div></div>
         <div class="card ingreso"><h4>Total Aportes</h4><div class="value" id="ahorroIngresos">₡0</div></div>
@@ -350,39 +339,14 @@ h4 { margin-bottom: 10px; font-size: 15px; }
                 <option value="tesorero_general">Tesorero General</option>
                 <option value="tesorero_comite">Tesorero de Comité</option>
               </select>
-              <script>
-  document.addEventListener('change', function(e){
-    if (e.target && e.target.id === 'newRol') {
-      var grupoComite = document.getElementById('newComite').parentElement;
-      grupoComite.style.display = (e.target.value === 'tesorero_comite') ? 'block' : 'none';
-    }
-  });
-</script>
             </div>
-            <div class="form-group">
-  <label>Comité / Fondo</label>
-  <input type="text" id="newComite" list="listaFondos" placeholder="Escribe o elige un fondo">
-  <datalist id="listaFondos"></datalist>
-  <small style="color:#7f8c8d; font-size:11px;">Si escribes uno nuevo, se creará automáticamente.</small>
-</div>
-    <option value="">— Ninguno —</option>
-    <option value="Diáconos">Diáconos</option>
-    <option value="Misiones">Misiones</option>
-    <option value="Damas">Damas</option>
-    <option value="Evangelismo">Evangelismo</option>
-    <option value="Jóvenes">Jóvenes</option>
-    <option value="Obra Social">Obra Social</option>
-    <option value="Escuela Dominical">Escuela Dominical</option>
-    <option value="Alabanza">Alabanza</option>
-    <option value="Caballeros">Caballeros</option>
-    <option value="Audiovisuales">Audiovisuales</option>
-    <option value="Piso Iglesia">Piso Iglesia</option>
-    <option value="Intersección">Intersección</option>
-    <option value="Nueva Obra">Nueva Obra</option>
-    <option value="Sonido">Sonido</option>
-    <option value="Fondo General">Fondo General</option>
-  </select>
-</div>
+            <div class="form-group" id="grupoNewComite">
+              <label>Comité / Fondo</label>
+              <input type="text" id="newComite" list="listaFondos" placeholder="Escribe o elige un fondo">
+              <datalist id="listaFondos"></datalist>
+              <small style="color:#7f8c8d; font-size:11px;">Si escribes uno nuevo, se creará automáticamente.</small>
+            </div>
+          </div>
           <button class="btn-primary" id="btnCrearUser">Crear usuario</button>
         </div>
         <table class="data-table" id="tablaUsuarios">
@@ -391,7 +355,6 @@ h4 { margin-bottom: 10px; font-size: 15px; }
         </table>
       </div>
     </section>
-
   </main>
 </div>
 
@@ -402,10 +365,9 @@ h4 { margin-bottom: 10px; font-size: 15px; }
     <button class="btn-primary" style="margin-top:14px; width:100%;" id="btnImprimir">Imprimir</button>
   </div>
 </div>
-
 <script>
 /* ============================================================
-   CONTABILIDAD IGLESIA - v4 con Firebase
+   CONTABILIDAD IGLESIA - v4 FINAL
    ============================================================ */
 
 var DB_KEY = 'iglesia_contabilidad_v4';
@@ -420,11 +382,7 @@ var FONDOS_DEFECTO = [
   'Intersección','Nueva Obra','Sonido','Diezmos','Fondo General'
 ];
 
-/* Fondo virtual que NO aparece en selects ni se puede registrar directamente.
-   Solo se muestra como tarjeta resumen sumando los saldos de todos los fondos de comités. */
-var FONDO_CONSOLIDADO = '__CONSOLIDADO__';
-
-/* ============ FIREBASE ============ */
+/* Firebase */
 var firebaseConfig = {
   apiKey: "AIzaSyC7ypZQEv7yw3iKxiwv8XiFAv6R_NSNYRM",
   authDomain: "contabilidad-iglesia-liberia.firebaseapp.com",
@@ -464,7 +422,6 @@ function actualizarEstadoNube(txt) {
 function saveDB(d) {
   ultimoTimestampLocal = Date.now();
   localStorage.setItem(DB_KEY, JSON.stringify(d));
-  // Sync con Firestore
   if (fbListo && fbDocRef) {
     fbSincronizando = true;
     actualizarEstadoNube('⬆️ Guardando...');
@@ -472,15 +429,12 @@ function saveDB(d) {
       .then(function(){
         fbSincronizando = false;
         actualizarEstadoNube('☁️ Guardado');
-        console.log('☁️ Sincronizado con la nube');
       })
       .catch(function(e){
         fbSincronizando = false;
         actualizarEstadoNube('⚠️ Error al guardar');
         console.error('❌ Error sync:', e);
       });
-  } else {
-    console.warn('Firebase no listo, guardado solo local');
   }
 }
 
@@ -488,62 +442,45 @@ function escucharFirestore() {
   if (!fbListo || !fbDocRef) { setTimeout(escucharFirestore, 800); return; }
   if (fbUnsubscribe) fbUnsubscribe();
   fbUnsubscribe = window.__firebase.onSnapshot(fbDocRef, function(snap){
-    // Si acabamos de guardar hace menos de 2 seg, ignorar
     if (Date.now() - ultimoTimestampLocal < 2000) return;
-
     if (!snap.exists()) {
       var local = loadDB();
-      if (local) {
-        window.__firebase.setDoc(fbDocRef, local);
-        console.log('📤 Datos locales enviados a la nube');
-      }
+      if (local) window.__firebase.setDoc(fbDocRef, local);
       return;
     }
     var cloudData = snap.data();
     var localData = loadDB();
-
     var totalCloud = (cloudData.libro||[]).length + (cloudData.diezmos||[]).length + (cloudData.ahorro||[]).length;
     var totalLocal = localData ? ((localData.libro||[]).length + (localData.diezmos||[]).length + (localData.ahorro||[]).length) : -1;
 
-    // PROTECCIÓN: nunca sobreescribir con menos datos
-if (localData && totalCloud < totalLocal) {
-  console.log('⚠️ Nube con menos datos que local. Subiendo local para proteger.');
-  window.__firebase.setDoc(fbDocRef, localData);
-} else if (totalCloud !== totalLocal || !localData) {
-  localStorage.setItem(DB_KEY, JSON.stringify(cloudData));
-  console.log('🔄 Datos actualizados desde la nube');
-  actualizarEstadoNube('🔄 Actualizado');
-  if (session) renderTodo();
-}
+    // PROTECCIÓN: si la nube tiene menos datos que el local, no borrar
+    if (localData && totalCloud < totalLocal) {
+      console.log('⚠️ Nube con menos datos. Subiendo local.');
+      window.__firebase.setDoc(fbDocRef, localData);
+      return;
+    }
+    if (totalCloud !== totalLocal || !localData) {
+      localStorage.setItem(DB_KEY, JSON.stringify(cloudData));
+      console.log('🔄 Datos actualizados desde la nube');
+      actualizarEstadoNube('🔄 Actualizado');
+      if (session) renderTodo();
+    }
   }, function(err){
     console.error('❌ Error escuchando:', err);
   });
 }
 
-/* ============ DB LOCAL ============ */
+/* Normalizar texto (quita tildes y minúsculas) */
+function normalizar(txt) {
+  return (txt || '').toString().toLowerCase().trim()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
 function loadDB() {
   var raw = localStorage.getItem(DB_KEY);
   return raw ? JSON.parse(raw) : null;
 }
-function migrarDB() {
-  var db = loadDB();
-  if (!db) return;
-  // Si ya existe la lista de fondos, no hacer nada
-  if (db.fondos && db.fondos.length > 0) return;
-  // Crear la lista base + cualquier comité de usuarios que no esté
-  var base = [
-    'Diáconos','Misiones','Damas','Evangelismo','Jóvenes','Obra Social',
-    'Escuela Dominical','Alabanza','Caballeros','Audiovisuales','Piso Iglesia',
-    'Intersección','Nueva Obra','Sonido','Diezmos','Fondo General'
-  ];
-  db.usuarios.forEach(function(u){
-    if (u.comite && base.indexOf(u.comite) === -1) base.push(u.comite);
-  });
-  db.fondos = base;
-  saveDB(db);
-  console.log('🔧 Migración: lista de fondos creada');
-}
-  
+
 function initDB() {
   if (localStorage.getItem(DB_KEY)) return;
   var inicial = {
@@ -555,28 +492,46 @@ function initDB() {
       { user: 'damas', pass: 'damas1205', rol: 'tesorero_comite', comite: 'Damas' }
     ],
     libro: [], diezmos: [], ahorro: [], cierres: [], recibos: 0,
-    // 🔥 NUEVO: lista de fondos, ahora dinámica
-    fondos: [
-      'Diáconos','Misiones','Damas','Evangelismo','Jóvenes','Obra Social',
-      'Escuela Dominical','Alabanza','Caballeros','Audiovisuales','Piso Iglesia',
-      'Intersección','Nueva Obra','Sonido','Diezmos','Fondo General'
-    ]
+    fondos: FONDOS_DEFECTO.slice()
   };
   localStorage.setItem(DB_KEY, JSON.stringify(inicial));
 }
 
-/* ============ UTILIDADES ============ */
-function formatoMoneda(n) { return '₡' + Math.round(Number(n) || 0).toLocaleString('es-CR'); }
+function migrarDB() {
+  var db = loadDB();
+  if (!db) return;
+  if (!db.fondos) db.fondos = [];
+  // Agregar fondos base si faltan
+  FONDOS_DEFECTO.forEach(function(f){
+    var existe = db.fondos.find(function(x){ return normalizar(x) === normalizar(f); });
+    if (!existe) db.fondos.push(f);
+  });
+  // Agregar comités de usuarios que no estén
+  db.usuarios.forEach(function(u){
+    if (u.comite) {
+      var existe = db.fondos.find(function(x){ return normalizar(x) === normalizar(u.comite); });
+      if (!existe) db.fondos.push(u.comite);
+    }
+  });
+  saveDB(db);
+}
+
+function formatoMoneda(n) {
+  return '₡' + Math.round(Number(n) || 0).toLocaleString('es-CR');
+}
 function hoyISO() { return new Date().toISOString().slice(0,10); }
 
-/* ============ LOGIN ============ */
+/* LOGIN */
 function login() {
   var user = document.getElementById('loginUser').value.trim();
   var pass = document.getElementById('loginPass').value;
   var db = loadDB();
   if (!db) { document.getElementById('loginError').textContent = 'BD no inicializada.'; return; }
   var u = db.usuarios.find(function(x){ return x.user === user && x.pass === pass; });
-  if (!u) { document.getElementById('loginError').textContent = 'Usuario o contraseña incorrectos'; return; }
+  if (!u) {
+    document.getElementById('loginError').textContent = 'Usuario o contraseña incorrectos';
+    return;
+  }
   session = u;
   document.getElementById('loginError').textContent = '';
   document.getElementById('loginScreen').classList.add('hidden');
@@ -597,6 +552,7 @@ function login() {
   document.getElementById('tabAhorroBtn').style.display = esP ? 'inline-block' : 'none';
   var uTab = document.querySelector('.tab[data-tab="usuarios"]');
   if (uTab) uTab.style.display = esP ? 'inline-block' : 'none';
+  document.getElementById('grupoPctAhorro').style.display = esP ? 'block' : 'none';
 
   if (esC) {
     document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
@@ -605,37 +561,18 @@ function login() {
     document.getElementById('tab-libro').classList.add('active');
   }
 
-  document.getElementById('grupoPctAhorro').style.display = esP ? 'block' : 'none';
-
   ['movFecha','diezmoFecha','ahorroFecha'].forEach(function(id){
     var el = document.getElementById(id);
     if (el) el.value = hoyISO();
   });
 
   llenarSelectsFondos();
-function llenarSelectsFondos() {
-  var db = loadDB();
-  var listaFondos = (db && db.fondos && db.fondos.length > 0) ? db.fondos : FONDOS_DEFECTO;
 
-  // 🔥 NUEVO: Llenar el datalist de fondos para el formulario de usuarios
-  var dl = document.getElementById('listaFondos');
-  if (dl) {
-    dl.innerHTML = '';
-    listaFondos.forEach(function(f){ dl.appendChild(new Option(f, f)); });
-  }
-
-  var visibles = fondosVisibles();
-  // ... el resto de la función queda igual
-}
-  
-  // Suscribirse a la nube
   if (fbListo && fbDocRef) {
     window.__firebase.setDoc(fbDocRef, db).catch(function(e){ console.warn(e); });
     escucharFirestore();
   }
-  // Llenar los selects de fondos según el usuario actual
-  llenarSelectsFondos();
-  
+
   renderTodo();
 }
 
@@ -648,7 +585,7 @@ function logout() {
   document.getElementById('loginPass').value = '';
 }
 
-/* ============ PERMISOS ============ */
+/* PERMISOS */
 function esPastor() { return session && session.rol === 'admin'; }
 function esTesoreroGeneral() { return session && session.rol === 'tesorero_general'; }
 function esComite() { return session && session.rol === 'tesorero_comite'; }
@@ -661,27 +598,29 @@ function fondosVisibles() {
   var db = loadDB();
   var lista = (db && db.fondos && db.fondos.length > 0) ? db.fondos : FONDOS_DEFECTO;
   if (esPastor() || esTesoreroGeneral()) return lista.slice();
-  if (esComite()) return [session.comite];
+  if (esComite()) {
+    var enf = lista.find(function(f){ return normalizar(f) === normalizar(session.comite); });
+    return enf ? [enf] : [session.comite];
+  }
   return [];
 }
+
 function puedeMoverFondo(fondo) {
   if (!session) return false;
   if (esPastor() || esTesoreroGeneral()) return true;
   if (esComite()) {
     if (!session.comite || !fondo) return false;
-    // Comparación flexible: ignora mayúsculas/minúsculas y espacios extra
-    return session.comite.toLowerCase().trim() === fondo.toLowerCase().trim();
+    return normalizar(session.comite) === normalizar(fondo);
   }
   return false;
 }
 
-/* ============ NAVEGACIÓN ============ */
+/* NAVEGACIÓN */
 function switchTab(name) {
   if (!session) return;
   if (esComite() && ['diezmos','ahorro','usuarios'].indexOf(name) !== -1) { alert('Sin acceso.'); return; }
   if (name === 'ahorro' && !puedeVerAhorro()) { alert('Solo el Pastor.'); return; }
   if (name === 'usuarios' && !esPastor()) { alert('Solo el Pastor.'); return; }
-
   document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
   document.querySelectorAll('.tab-content').forEach(function(t){ t.classList.remove('active'); });
   var tabBtn = document.querySelector('.tab[data-tab="' + name + '"]');
@@ -691,7 +630,7 @@ function switchTab(name) {
   renderTodo();
 }
 
-/* ============ RECIBOS ============ */
+/* RECIBOS */
 function generarReciboNum(db) {
   var anio = new Date().getFullYear();
   db.recibos = (db.recibos || 0) + 1;
@@ -740,7 +679,7 @@ function mostrarReciboDiezmoConDescuentos(r) {
 
 function cerrarRecibo() { document.getElementById('reciboModal').classList.add('hidden'); }
 
-/* ============ CÁLCULO DIEZMOS ============ */
+/* DIEZMOS */
 function calcularDescuentosDiezmo(monto, pctNacional, pctLocal, pctAhorro) {
   if (typeof pctAhorro !== 'number' || isNaN(pctAhorro)) pctAhorro = 30;
   var saldo = monto;
@@ -784,7 +723,7 @@ function actualizarPreviewDiezmo() {
     '<b>Neto Pastor: ' + formatoMoneda(d.netoPastor) + '</b></div>';
 }
 
-/* ============ LIBRO GENERAL ============ */
+/* LIBRO */
 function registrarMovimiento() {
   if (!esPastor() && !esTesoreroGeneral() && !esComite()) { alert('Sin permiso.'); return; }
   var fecha = document.getElementById('movFecha').value;
@@ -796,7 +735,6 @@ function registrarMovimiento() {
   if (!fondo) { alert('Fondo requerido'); return; }
   if (!concepto) { alert('Concepto requerido'); return; }
   if (!monto || monto <= 0) { alert('Monto inválido'); return; }
-
   if (esComite() && !puedeMoverFondo(fondo)) { alert('Sin permiso.'); return; }
 
   var db = loadDB();
@@ -814,8 +752,8 @@ function registrarMovimiento() {
 }
 
 function saldoFondo(db, fondo) {
-  var ing = db.libro.filter(function(m){ return m.fondo === fondo && m.tipo === 'ingreso'; }).reduce(function(s,m){ return s + m.monto; }, 0);
-  var egr = db.libro.filter(function(m){ return m.fondo === fondo && m.tipo === 'egreso'; }).reduce(function(s,m){ return s + m.monto; }, 0);
+  var ing = db.libro.filter(function(m){ return normalizar(m.fondo) === normalizar(fondo) && m.tipo === 'ingreso'; }).reduce(function(s,m){ return s + m.monto; }, 0);
+  var egr = db.libro.filter(function(m){ return normalizar(m.fondo) === normalizar(fondo) && m.tipo === 'egreso'; }).reduce(function(s,m){ return s + m.monto; }, 0);
   return ing - egr;
 }
 
@@ -829,13 +767,15 @@ function renderLibro() {
   if (!tbody) return;
   tbody.innerHTML = '';
   var visibles = fondosVisibles();
-  var movs = db.libro.filter(function(m){ return visibles.indexOf(m.fondo) !== -1; });
+  var movs = db.libro.filter(function(m){
+    return visibles.some(function(f){ return normalizar(f) === normalizar(m.fondo); });
+  });
   var ing = 0, egr = 0;
   movs.slice().reverse().filter(function(m){
     if (filtro && m.concepto.toLowerCase().indexOf(filtro) < 0 &&
         m.fondo.toLowerCase().indexOf(filtro) < 0 &&
         m.numero.toLowerCase().indexOf(filtro) < 0) return false;
-    if (fondoFiltro && m.fondo !== fondoFiltro) return false;
+    if (fondoFiltro && normalizar(m.fondo) !== normalizar(fondoFiltro)) return false;
     if (tipoFiltro && m.tipo !== tipoFiltro) return false;
     return true;
   }).forEach(function(m){
@@ -848,7 +788,6 @@ function renderLibro() {
       '<td>' + m.usuario + '</td>' +
       '<td>' +
       '<button class="btn-small btn-view" onclick="verReciboLibro(\'' + m.id + '\')">Recibo</button>' +
-      '<button class="btn-small btn-edit" onclick="editarLibro(\'' + m.id + '\')">Editar</button>' +
       '<button class="btn-small btn-del" onclick="eliminarLibro(\'' + m.id + '\')">Eliminar</button>' +
       '</td>';
     tbody.appendChild(tr);
@@ -862,17 +801,6 @@ function verReciboLibro(id) {
   var m = loadDB().libro.find(function(x){ return String(x.id) === String(id); });
   if (m) mostrarRecibo(m);
 }
-function editarLibro(id) {
-  var db = loadDB();
-  var m = db.libro.find(function(x){ return String(x.id) === String(id); });
-  if (!m) return;
-  if (!puedeMoverFondo(m.fondo)) { alert('Sin permiso.'); return; }
-  var nm = prompt('Nuevo monto:', m.monto); if (nm === null) return;
-  var nc = prompt('Nuevo concepto:', m.concepto); if (nc === null) return;
-  m.monto = parseInt(nm, 10) || m.monto;
-  m.concepto = nc || m.concepto;
-  saveDB(db); renderTodo();
-}
 function eliminarLibro(id) {
   var db = loadDB();
   var m = db.libro.find(function(x){ return String(x.id) === String(id); });
@@ -883,7 +811,7 @@ function eliminarLibro(id) {
   saveDB(db); renderTodo();
 }
 
-/* ============ DIEZMOS ============ */
+/* DIEZMOS */
 function registrarDiezmo() {
   if (!puedeEditarDiezmo()) { alert('Solo Pastor o Tesorero General.'); return; }
   var fecha = document.getElementById('diezmoFecha').value;
@@ -893,13 +821,8 @@ function registrarDiezmo() {
   var pcl = parseFloat(document.getElementById('pctLocal').value);
   var pcaEl = document.getElementById('pctAhorro');
   var pca = (pcaEl && pcaEl.offsetParent !== null) ? parseFloat(pcaEl.value) : 30;
-  if (!fecha) { alert('Fecha requerida'); return; }
-  if (!concepto) { alert('Concepto requerido'); return; }
-  if (!monto || monto <= 0) { alert('Monto inválido'); return; }
-  if (isNaN(pcn) || pcn < 0 || pcn > 100) { alert('% F. Nacional inválido'); return; }
-  if (isNaN(pcl) || pcl < 0 || pcl > 100) { alert('% F. Local inválido'); return; }
-  if (isNaN(pca) || pca < 0 || pca > 100) { alert('% Ahorro inválido'); return; }
-
+  if (!fecha || !concepto || !monto || monto <= 0) { alert('Complete los campos'); return; }
+  if (isNaN(pcn) || isNaN(pcl) || isNaN(pca)) { alert('Porcentajes inválidos'); return; }
   var desc = calcularDescuentosDiezmo(monto, pcn, pcl, pca);
   var db = loadDB();
   var recibo = { numero: generarReciboNum(db), fecha: fecha, concepto: concepto, monto: monto, usuario: session.user };
@@ -969,7 +892,7 @@ function eliminarDiezmo(id) {
   saveDB(db); renderTodo();
 }
 
-/* ============ CIERRE MENSUAL ============ */
+/* CIERRE */
 function cerrarMes() {
   if (!puedeEditarLibro()) { alert('Solo Pastor o Tesorero General.'); return; }
   var mes = document.getElementById('cierreMes').value;
@@ -1012,8 +935,7 @@ function cerrarMes() {
       id: Date.now() + Math.random() + Math.random(),
       numero: generarReciboNum(db),
       fecha: fechaCierre, fondo: 'Diezmos',
-      concepto: e.concepto,
-      tipo: 'egreso', monto: e.monto, usuario: session.user,
+      concepto: e.concepto, tipo: 'egreso', monto: e.monto, usuario: session.user,
       creadoEn: new Date().toISOString()
     });
   });
@@ -1037,7 +959,7 @@ function cerrarMes() {
   renderTodo();
 }
 
-/* ============ AHORRO PASTOR ============ */
+/* AHORRO */
 function registrarEgresoAhorro() {
   if (!puedeVerAhorro()) { alert('Solo el Pastor.'); return; }
   var fecha = document.getElementById('ahorroFecha').value;
@@ -1085,13 +1007,13 @@ function eliminarAhorro(id) {
   saveDB(db); renderTodo();
 }
 
-/* ============ PANEL ============ */
+/* PANEL */
 function renderPanel() {
   var db = loadDB(); if (!db) return;
   var visibles = fondosVisibles();
   var totalIng = 0, totalEgr = 0;
   db.libro.forEach(function(m){
-    if (visibles.indexOf(m.fondo) < 0) return;
+    if (!visibles.some(function(f){ return normalizar(f) === normalizar(m.fondo); })) return;
     if (m.tipo === 'ingreso') totalIng += m.monto; else totalEgr += m.monto;
   });
   var dp = db.diezmos.filter(function(d){ return d.estado === 'pendiente'; }).reduce(function(s,d){ return s + d.monto; }, 0);
@@ -1112,53 +1034,32 @@ function renderPanel() {
   }
 
   var grid = document.getElementById('fondosGrid');
-if (grid) {
-  grid.innerHTML = '';
-
-  // Tarjeta 1: FONDO CONSOLIDADO (suma de TODOS los fondos de comités, no incluye Diezmos)
-  var fondosComites = visibles.filter(function(f){ return f !== 'Diezmos' && f !== 'Fondo General'; });
-  var totalConsolidado = 0;
-  var movsConsolidado = 0;
-  fondosComites.forEach(function(f){
-    totalConsolidado += saldoFondo(db, f);
-    movsConsolidado += db.libro.filter(function(m){ return m.fondo === f; }).length;
-  });
-  var cardCons = document.createElement('div');
-  cardCons.className = 'fondo-card';
-  cardCons.style.borderTopColor = '#27ae60';
-  cardCons.style.background = '#f0f9f4';
-  cardCons.style.cursor = 'pointer';
-  cardCons.onclick = function(){ verDetalleConsolidado(fondosComites); };
-  cardCons.innerHTML = '<h4>👥 TOTAL DE USUARIOS (Consolidado)</h4>' +
-    '<div class="balance" style="color:#27ae60;">' + formatoMoneda(totalConsolidado) + '</div>' +
-    '<div class="detalle">Suma de los ' + fondosComites.length + ' fondos · ' + movsConsolidado + ' movimiento(s)</div>';
-  grid.appendChild(cardCons);
-
-  // Tarjetas de cada fondo
-  var totalFondos = 0;
-  visibles.forEach(function(f){
-    var s = saldoFondo(db, f);
-    totalFondos += s;
-    var movs = db.libro.filter(function(m){ return m.fondo === f; }).length;
-    var card = document.createElement('div');
-    card.className = 'fondo-card' + (s < 0 ? ' negativo' : '');
-    card.onclick = function(){ verDetalleFondo(f); };
-    card.innerHTML = '<h4>' + f + '</h4><div class="balance">' + formatoMoneda(s) + '</div><div class="detalle">' + movs + ' movimiento(s)</div>';
-    grid.appendChild(card);
-  });
-
-  // Tarjeta final: TOTAL GENERAL
-  var cTot = document.createElement('div');
-  cTot.className = 'fondo-card';
-  cTot.style.borderTopColor = '#f39c12';
-  cTot.innerHTML = '<h4>TOTAL GENERAL</h4><div class="balance">' + formatoMoneda(totalFondos) + '</div><div class="detalle">Suma de todos los fondos</div>';
-  grid.appendChild(cTot);
-}
+  if (grid) {
+    grid.innerHTML = '';
+    var totalFondos = 0;
+    visibles.forEach(function(f){
+      var s = saldoFondo(db, f);
+      totalFondos += s;
+      var movs = db.libro.filter(function(m){ return normalizar(m.fondo) === normalizar(f); }).length;
+      var card = document.createElement('div');
+      card.className = 'fondo-card' + (s < 0 ? ' negativo' : '');
+      card.onclick = function(){ verDetalleFondo(f); };
+      card.innerHTML = '<h4>' + f + '</h4><div class="balance">' + formatoMoneda(s) + '</div><div class="detalle">' + movs + ' movimiento(s)</div>';
+      grid.appendChild(card);
+    });
+    if (!esComite()) {
+      var cTot = document.createElement('div');
+      cTot.className = 'fondo-card';
+      cTot.style.borderTopColor = '#f39c12';
+      cTot.innerHTML = '<h4>TOTAL GENERAL</h4><div class="balance">' + formatoMoneda(totalFondos) + '</div><div class="detalle">Suma de todos los fondos</div>';
+      grid.appendChild(cTot);
+    }
+  }
 }
 
 function verDetalleFondo(fondo) {
   var db = loadDB();
-  var movs = db.libro.filter(function(m){ return m.fondo === fondo; }).slice().reverse();
+  var movs = db.libro.filter(function(m){ return normalizar(m.fondo) === normalizar(fondo); }).slice().reverse();
   var html = '<div class="form-card"><h4>Fondo: ' + fondo + '</h4>';
   if (movs.length === 0) { html += '<p class="info">Sin movimientos.</p>'; }
   else {
@@ -1175,35 +1076,8 @@ function verDetalleFondo(fondo) {
   html += '</div>';
   document.getElementById('detalleFondo').innerHTML = html;
 }
-function verDetalleConsolidado(fondos) {
-  var db = loadDB();
-  var html = '<div class="form-card"><h4>👥 Detalle Consolidado - Todos los Usuarios</h4>';
-  html += '<div style="overflow-x:auto;"><table class="data-table"><thead><tr>' +
-    '<th>Fondo</th><th>Entradas</th><th>Salidas</th><th>Saldo</th></tr></thead><tbody>';
 
-  var tIng = 0, tEgr = 0, tSaldo = 0;
-  fondos.forEach(function(f){
-    var ing = db.libro.filter(function(m){ return m.fondo === f && m.tipo === 'ingreso'; }).reduce(function(s,m){ return s + m.monto; }, 0);
-    var egr = db.libro.filter(function(m){ return m.fondo === f && m.tipo === 'egreso'; }).reduce(function(s,m){ return s + m.monto; }, 0);
-    var saldo = ing - egr;
-    tIng += ing; tEgr += egr; tSaldo += saldo;
-    html += '<tr><td>' + f + '</td>' +
-      '<td class="num pos">' + formatoMoneda(ing) + '</td>' +
-      '<td class="num neg">' + formatoMoneda(egr) + '</td>' +
-      '<td class="num"><b>' + formatoMoneda(saldo) + '</b></td></tr>';
-  });
-
-  html += '<tr style="background:#f0f9f4; font-weight:bold;">' +
-    '<td>TOTAL</td>' +
-    '<td class="num pos">' + formatoMoneda(tIng) + '</td>' +
-    '<td class="num neg">' + formatoMoneda(tEgr) + '</td>' +
-    '<td class="num">' + formatoMoneda(tSaldo) + '</td></tr>';
-
-  html += '</tbody></table></div></div>';
-  document.getElementById('detalleFondo').innerHTML = html;
-}
-  
-/* ============ USUARIOS ============ */
+/* USUARIOS */
 function renderUsuarios() {
   if (!esPastor()) return;
   var db = loadDB(); if (!db) return;
@@ -1219,78 +1093,41 @@ function renderUsuarios() {
     tbody.appendChild(tr);
   });
 }
+
 function crearUsuario() {
   if (!esPastor()) { alert('Solo el Pastor.'); return; }
   var user = document.getElementById('newUser').value.trim();
   var pass = document.getElementById('newPass').value.trim();
   var rol = document.getElementById('newRol').value;
-  var comite = document.getElementById('newComite').value || null;
+  var comite = document.getElementById('newComite').value.trim() || null;
   if (!user || !pass) { alert('Usuario y contraseña requeridos'); return; }
   var db = loadDB();
   if (db.usuarios.find(function(x){ return x.user === user; })) { alert('Ya existe.'); return; }
+
   db.usuarios.push({ user: user, pass: pass, rol: rol, comite: comite });
+
+  if (rol === 'tesorero_comite' && comite) {
+    if (!db.fondos) db.fondos = FONDOS_DEFECTO.slice();
+    var existe = db.fondos.find(function(f){ return normalizar(f) === normalizar(comite); });
+    if (!existe) {
+      db.fondos.push(comite);
+      console.log('✅ Fondo agregado: ' + comite);
+    } else if (existe !== comite) {
+      db.usuarios[db.usuarios.length - 1].comite = existe;
+    }
+  }
+
   saveDB(db);
   document.getElementById('newUser').value = '';
   document.getElementById('newPass').value = '';
   document.getElementById('newComite').value = '';
   renderUsuarios();
-  function llenarSelectsFondos() {
-  var db = loadDB();
-  var listaFondos = (db && db.fondos && db.fondos.length > 0) ? db.fondos : FONDOS_DEFECTO;
-
-  // Datalist del formulario de usuarios
-  var dl = document.getElementById('listaFondos');
-  if (dl) {
-    dl.innerHTML = '';
-    listaFondos.forEach(function(f){ dl.appendChild(new Option(f, f)); });
-  }
-
-  var visibles = fondosVisibles();
-
-  // 🔥 Select del formulario "Registrar Movimiento":
-  // Solo incluye los fondos donde el usuario TIENE PERMISO de escribir.
-  var sel = document.getElementById('movFondo');
-  if (sel) {
-    sel.innerHTML = '';
-    var permitidos = visibles.filter(function(f){ return puedeMoverFondo(f); });
-    permitidos.forEach(function(f){ sel.add(new Option(f, f)); });
-
-    // Si solo hay 1 (tesorero de comité), se selecciona automáticamente
-    if (permitidos.length === 1) sel.value = permitidos[0];
-
-    // Si no hay ninguno, mostrar aviso
-    if (permitidos.length === 0) {
-      sel.add(new Option('Sin fondos disponibles', ''));
-    }
-  }
-
-  // Select del filtro (para ver movimientos): muestra TODOS los que puede ver
-  var sf = document.getElementById('filtroLibroFondo');
-  if (sf) {
-    sf.innerHTML = '';
-    sf.add(new Option('Todos los fondos', ''));
-    visibles.forEach(function(f){ sf.add(new Option(f, f)); });
-  }
-
-  // Select del exportar
-  var se = document.getElementById('excelLibroFondo');
-  if (se) {
-    se.innerHTML = '';
-    se.add(new Option('Todos los fondos', ''));
-    visibles.forEach(function(f){ se.add(new Option(f, f)); });
-  }
-}
-  // Si es tesorero de comité, bloquear el select (solo su fondo)
-  if (esComite() && sel) {
-    sel.disabled = true;
-    sel.title = 'Solo puedes registrar en tu propio fondo';
-  } else if (sel) {
-    sel.disabled = false;
-  }
-  
+  llenarSelectsFondos();
   renderPanel();
   renderLibro();
+  alert('✅ Usuario creado');
 }
+
 function eliminarUsuario(user) {
   if (!esPastor()) return;
   if (user === 'pastor') { alert('Protegido.'); return; }
@@ -1300,14 +1137,34 @@ function eliminarUsuario(user) {
   saveDB(db); renderUsuarios();
 }
 
-/* ============ SELECTS ============ */
+/* SELECTS */
 function llenarSelectsFondos() {
+  var db = loadDB();
+  var listaFondos = (db && db.fondos && db.fondos.length > 0) ? db.fondos : FONDOS_DEFECTO;
+
+  var dl = document.getElementById('listaFondos');
+  if (dl) {
+    dl.innerHTML = '';
+    listaFondos.forEach(function(f){ dl.appendChild(new Option(f, f)); });
+  }
+
   var visibles = fondosVisibles();
+
   var sel = document.getElementById('movFondo');
   if (sel) {
     sel.innerHTML = '';
-    visibles.forEach(function(f){ if (puedeMoverFondo(f)) sel.add(new Option(f, f)); });
+    var permitidos = visibles.filter(function(f){ return puedeMoverFondo(f); });
+    permitidos.forEach(function(f){ sel.add(new Option(f, f)); });
+    if (permitidos.length === 1) sel.value = permitidos[0];
+    if (permitidos.length === 0) sel.add(new Option('Sin fondos', ''));
+    if (esComite()) {
+      sel.disabled = true;
+      sel.title = 'Solo puedes registrar en tu propio fondo';
+    } else {
+      sel.disabled = false;
+    }
   }
+
   var sf = document.getElementById('filtroLibroFondo');
   if (sf) {
     sf.innerHTML = '';
@@ -1339,7 +1196,7 @@ function llenarSelectoresFecha() {
   });
 }
 
-/* ============ EXPORTAR CSV / IMPRIMIR ============ */
+/* EXPORTAR / IMPRIMIR */
 function descargarCSV(nombre, filas) {
   var csv = filas.map(function(fila){
     return fila.map(function(celda){
@@ -1372,12 +1229,13 @@ function exportarLibroExcel() {
   var db = loadDB();
   var visibles = fondosVisibles();
   var movs = db.libro.filter(function(m){
-    return visibles.indexOf(m.fondo) !== -1 && m.fecha.indexOf(prefijo) === 0 && (!fondo || m.fondo === fondo);
+    return visibles.some(function(f){ return normalizar(f) === normalizar(m.fondo); }) &&
+      m.fecha.indexOf(prefijo) === 0 && (!fondo || normalizar(m.fondo) === normalizar(fondo));
   });
   if (movs.length === 0) { alert('Sin movimientos.'); return; }
   var filas = [
     ['IGLESIA PENTECOSTAL LATINOAMERICANA LIBERIA'],
-    ['LIBRO GENERAL - ' + prefijo + (fondo ? ' - ' + fondo : '')],
+    ['LIBRO GENERAL - ' + prefijo],
     ['Generado:', new Date().toLocaleString('es-CR'), 'Por:', session.user],
     [],
     ['Recibo','Fecha','Fondo','Concepto','Entradas','Salidas','Usuario']
@@ -1403,7 +1261,8 @@ function imprimirLibro() {
   var db = loadDB();
   var visibles = fondosVisibles();
   var movs = db.libro.filter(function(m){
-    return visibles.indexOf(m.fondo) !== -1 && m.fecha.indexOf(prefijo) === 0 && (!fondo || m.fondo === fondo);
+    return visibles.some(function(f){ return normalizar(f) === normalizar(m.fondo); }) &&
+      m.fecha.indexOf(prefijo) === 0 && (!fondo || normalizar(m.fondo) === normalizar(fondo));
   });
   if (movs.length === 0) { alert('Sin movimientos.'); return; }
   var ing = 0, egr = 0;
@@ -1415,7 +1274,7 @@ function imprimirLibro() {
       '<td>' + m.usuario + '</td></tr>';
   }).join('');
   abrirVentanaImpresion('<h1>Iglesia Pentecostal Latinoamericana Liberia</h1>' +
-    '<h2>Libro General - ' + prefijo + (fondo ? ' - ' + fondo : '') + '</h2>' +
+    '<h2>Libro General - ' + prefijo + '</h2>' +
     '<p style="text-align:right;">Generado: ' + new Date().toLocaleString('es-CR') + ' por ' + session.user + '</p>' +
     '<table><thead><tr><th>Recibo</th><th>Fecha</th><th>Fondo</th><th>Concepto</th><th>Entradas</th><th>Salidas</th><th>Usuario</th></tr></thead>' +
     '<tbody>' + filas + '</tbody>' +
@@ -1494,7 +1353,7 @@ function imprimirAhorro() {
     '<table><thead><tr><th>Recibo</th><th>Fecha</th><th>Concepto</th><th>Tipo</th><th>Monto</th></tr></thead><tbody>' + filas + '</tbody></table>');
 }
 
-/* ============ RENDER GLOBAL ============ */
+/* RENDER GLOBAL */
 function renderTodo() {
   if (!session) return;
   if (esComite()) { renderLibro(); return; }
@@ -1505,11 +1364,13 @@ function renderTodo() {
   if (esPastor()) renderUsuarios();
 }
 
-/* ============ INIT ============ */
+/* INIT */
 window.addEventListener('DOMContentLoaded', function() {
-  console.log('Iniciando sistema v4 con Firebase...');
+  console.log('Iniciando sistema v4 final...');
   migrarDB();
   initDB();
+  // Volver a migrar después de initDB por si acaso
+  migrarDB();
 
   function on(id, evento, fn) {
     var el = document.getElementById(id);
@@ -1541,7 +1402,6 @@ window.addEventListener('DOMContentLoaded', function() {
 
   llenarSelectoresFecha();
 
-  // Iniciar Firebase
   initFirebase();
   setTimeout(function(){ escucharFirestore(); }, 1200);
 
