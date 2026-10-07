@@ -665,7 +665,12 @@ function fondosVisibles() {
 function puedeMoverFondo(fondo) {
   if (!session) return false;
   if (esPastor() || esTesoreroGeneral()) return true;
-  return esComite() && session.comite === fondo;
+  if (esComite()) {
+    if (!session.comite || !fondo) return false;
+    // Comparación flexible: ignora mayúsculas/minúsculas y espacios extra
+    return session.comite.toLowerCase().trim() === fondo.toLowerCase().trim();
+  }
+  return false;
 }
 
 /* ============ NAVEGACIÓN ============ */
@@ -1227,7 +1232,60 @@ function crearUsuario() {
   document.getElementById('newPass').value = '';
   document.getElementById('newComite').value = '';
   renderUsuarios();
-  llenarSelectsFondos();
+  function llenarSelectsFondos() {
+  var db = loadDB();
+  var listaFondos = (db && db.fondos && db.fondos.length > 0) ? db.fondos : FONDOS_DEFECTO;
+
+  // Datalist del formulario de usuarios
+  var dl = document.getElementById('listaFondos');
+  if (dl) {
+    dl.innerHTML = '';
+    listaFondos.forEach(function(f){ dl.appendChild(new Option(f, f)); });
+  }
+
+  var visibles = fondosVisibles();
+
+  // 🔥 Select del formulario "Registrar Movimiento":
+  // Solo incluye los fondos donde el usuario TIENE PERMISO de escribir.
+  var sel = document.getElementById('movFondo');
+  if (sel) {
+    sel.innerHTML = '';
+    var permitidos = visibles.filter(function(f){ return puedeMoverFondo(f); });
+    permitidos.forEach(function(f){ sel.add(new Option(f, f)); });
+
+    // Si solo hay 1 (tesorero de comité), se selecciona automáticamente
+    if (permitidos.length === 1) sel.value = permitidos[0];
+
+    // Si no hay ninguno, mostrar aviso
+    if (permitidos.length === 0) {
+      sel.add(new Option('Sin fondos disponibles', ''));
+    }
+  }
+
+  // Select del filtro (para ver movimientos): muestra TODOS los que puede ver
+  var sf = document.getElementById('filtroLibroFondo');
+  if (sf) {
+    sf.innerHTML = '';
+    sf.add(new Option('Todos los fondos', ''));
+    visibles.forEach(function(f){ sf.add(new Option(f, f)); });
+  }
+
+  // Select del exportar
+  var se = document.getElementById('excelLibroFondo');
+  if (se) {
+    se.innerHTML = '';
+    se.add(new Option('Todos los fondos', ''));
+    visibles.forEach(function(f){ se.add(new Option(f, f)); });
+  }
+}
+  // Si es tesorero de comité, bloquear el select (solo su fondo)
+  if (esComite() && sel) {
+    sel.disabled = true;
+    sel.title = 'Solo puedes registrar en tu propio fondo';
+  } else if (sel) {
+    sel.disabled = false;
+  }
+  
   renderPanel();
   renderLibro();
 }
