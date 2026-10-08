@@ -1067,6 +1067,16 @@ function renderPanel() {
         '<div style="font-size:11px;color:#7f8c8d;margin-top:4px;">' + fondosComites.length + ' comités · ' + movsConsolidado + ' mov.</div>' +
         '</div>';
     }
+        // 💼 Tarjeta de Fondo General (solo para Pastor y Tesorero General)
+    if (!esComite()) {
+      var saldoFondoGeneral = saldoFondo(db, 'Fondo General');
+      var movsFondoGeneral = db.libro.filter(function(m){ return normalizar(m.fondo) === normalizar('Fondo General'); }).length;
+      html += '<div class="card" style="border-color:#4b6cb7; background:#eef4ff; cursor:pointer;" onclick="verDetalleFondo(\'Fondo General\')">' +
+        '<h4>💼 Fondo General</h4>' +
+        '<div class="value" style="color:#4b6cb7;">' + formatoMoneda(saldoFondoGeneral) + '</div>' +
+        '<div style="font-size:11px;color:#7f8c8d;margin-top:4px;">' + movsFondoGeneral + ' movimiento(s)</div>' +
+        '</div>';
+    }
 
     // Ahorro Pastor (solo el Pastor)
     if (puedeVerAhorro()) {
@@ -1083,9 +1093,12 @@ function renderPanel() {
     grid.innerHTML = '';
     
 
-    // Tarjetas de cada fondo
+       // Tarjetas de cada fondo (excepto Fondo General, que ya está arriba)
     var totalFondos = 0;
     visibles.forEach(function(f){
+      // Saltar Fondo General (ya está en la fila superior)
+      if (normalizar(f) === normalizar('Fondo General')) return;
+      
       var s = saldoFondo(db, f);
       totalFondos += s;
       var movs = db.libro.filter(function(m){ return normalizar(m.fondo) === normalizar(f); }).length;
@@ -1096,12 +1109,14 @@ function renderPanel() {
       grid.appendChild(card);
     });
 
-    // Tarjeta de TOTAL GENERAL
+       // Tarjeta de TOTAL GENERAL (incluye Fondo General)
     if (!esComite()) {
+      var saldoFG = saldoFondo(db, 'Fondo General');
+      var granTotal = totalFondos + saldoFG;
       var cTot = document.createElement('div');
       cTot.className = 'fondo-card';
       cTot.style.borderTopColor = '#f39c12';
-      cTot.innerHTML = '<h4>TOTAL GENERAL</h4><div class="balance">' + formatoMoneda(totalFondos) + '</div><div class="detalle">Suma de todos los fondos</div>';
+      cTot.innerHTML = '<h4>TOTAL GENERAL</h4><div class="balance">' + formatoMoneda(granTotal) + '</div><div class="detalle">Suma de todos los fondos</div>';
       grid.appendChild(cTot);
     }
   }
