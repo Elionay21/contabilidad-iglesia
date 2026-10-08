@@ -1042,10 +1042,12 @@ function renderPanel() {
     var cards = document.getElementById('summaryCards');
   if (cards) {
     // Calcular el consolidado de comités (sin Diezmos ni Fondo General)
-    var fondosComites = visibles.filter(function(f){
-      var n = normalizar(f);
-      return n !== normalizar('Diezmos') && n !== normalizar('Fondo General');
-    });
+   var fondosComites = visibles.filter(function(f){
+  var n = normalizar(f);
+  return n !== normalizar('Diezmos') 
+      && n !== normalizar('Fondo General') 
+      && n !== normalizar('Fondo Pastor');
+});
     var totalConsolidado = 0;
     var movsConsolidado = 0;
     fondosComites.forEach(function(f){
