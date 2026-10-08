@@ -1030,24 +1030,32 @@ function eliminarAhorro(id) {
 
 /* PANEL */
 function renderPanel() {
-  var db = loadDB(); if (!db) return;
-  var visibles = fondosVisibles();
-  var totalIng = 0, totalEgr = 0;
-  db.libro.forEach(function(m){
-    if (!visibles.some(function(f){ return normalizar(f) === normalizar(m.fondo); })) return;
-    if (m.tipo === 'ingreso') totalIng += m.monto; else totalEgr += m.monto;
-  });
+ var db = loadDB(); if (!db) return;
+var visibles = fondosVisibles();
+
+// 🔥 Calcular totales SOLO de comités + Fondo Pastor + Fondo General (sin Diezmos)
+var fondosParaSaldo = visibles.filter(function(f){
+  return normalizar(f) !== normalizar('Diezmos');
+});
+
+var totalIng = 0, totalEgr = 0;
+db.libro.forEach(function(m){
+  var incluido = fondosParaSaldo.some(function(f){ return normalizar(f) === normalizar(m.fondo); });
+  if (!incluido) return;
+  if (m.tipo === 'ingreso') totalIng += m.monto; else totalEgr += m.monto;
+});
+var dp = db.diezmos.filter(function(d){ return d.estado === 'pendiente'; }).reduce(function(s,d){ return s + d.monto; }, 0);
   var dp = db.diezmos.filter(function(d){ return d.estado === 'pendiente'; }).reduce(function(s,d){ return s + d.monto; }, 0);
 
     var cards = document.getElementById('summaryCards');
   if (cards) {
-    // Calcular el consolidado de comités (sin Diezmos ni Fondo General)
-   var fondosComites = visibles.filter(function(f){
-  var n = normalizar(f);
-  return n !== normalizar('Diezmos') 
-      && n !== normalizar('Fondo General') 
-      && n !== normalizar('Fondo Pastor');
-});
+        // Consolidado: TODOS los comités (sin Diezmos, sin Fondo General, sin Fondo Pastor)
+    var fondosComites = visibles.filter(function(f){
+      var n = normalizar(f);
+      return n !== normalizar('Diezmos') 
+          && n !== normalizar('Fondo General') 
+          && n !== normalizar('Fondo Pastor');
+    });
     var totalConsolidado = 0;
     var movsConsolidado = 0;
     fondosComites.forEach(function(f){
@@ -1114,6 +1122,8 @@ function renderPanel() {
       if (normalizar(f) === normalizar('Fondo General')) return;
       // Saltar Fondo Pastor (ya está en la fila superior)
       if (normalizar(f) === normalizar('Fondo Pastor')) return;
+       // Saltar Diezmos (se maneja aparte)
+      if (normalizar(f) === normalizar('Diezmos')) return;
       
       var s = saldoFondo(db, f);
       totalFondos += s;
@@ -1125,7 +1135,7 @@ function renderPanel() {
       grid.appendChild(card);
     });
 
-          // Tarjeta de TOTAL GENERAL (incluye Fondo General y Fondo Pastor)
+            // Tarjeta de TOTAL GENERAL (comités + Fondo General + Fondo Pastor, SIN Diezmos)
     if (!esComite()) {
       var saldoFG = saldoFondo(db, 'Fondo General');
       var saldoFP = saldoFondo(db, 'Fondo Pastor');
@@ -1133,7 +1143,7 @@ function renderPanel() {
       var cTot = document.createElement('div');
       cTot.className = 'fondo-card';
       cTot.style.borderTopColor = '#f39c12';
-      cTot.innerHTML = '<h4>TOTAL GENERAL</h4><div class="balance">' + formatoMoneda(granTotal) + '</div><div class="detalle">Suma de todos los fondos</div>';
+      cTot.innerHTML = '<h4>TOTAL GENERAL</h4><div class="balance">' + formatoMoneda(granTotal) + '</div><div class="detalle">Comités + Fondo General + Fondo Pastor (sin Diezmos)</div>';
       grid.appendChild(cTot);
     }
   }
