@@ -1077,6 +1077,16 @@ function renderPanel() {
         '<div style="font-size:11px;color:#7f8c8d;margin-top:4px;">' + movsFondoGeneral + ' movimiento(s)</div>' +
         '</div>';
     }
+        // 🙏 Tarjeta de Fondo Pastor (solo para Pastor y Tesorero General)
+    if (!esComite()) {
+      var saldoFondoPastor = saldoFondo(db, 'Fondo Pastor');
+      var movsFondoPastor = db.libro.filter(function(m){ return normalizar(m.fondo) === normalizar('Fondo Pastor'); }).length;
+      html += '<div class="card" style="border-color:#8e44ad; background:#f7f0fc; cursor:pointer;" onclick="verDetalleFondo(\'Fondo Pastor\')">' +
+        '<h4>🙏 Fondo Pastor</h4>' +
+        '<div class="value" style="color:#8e44ad;">' + formatoMoneda(saldoFondoPastor) + '</div>' +
+        '<div style="font-size:11px;color:#7f8c8d;margin-top:4px;">' + movsFondoPastor + ' movimiento(s)</div>' +
+        '</div>';
+    }
 
     // Ahorro Pastor (solo el Pastor)
     if (puedeVerAhorro()) {
@@ -1098,6 +1108,10 @@ function renderPanel() {
     visibles.forEach(function(f){
       // Saltar Fondo General (ya está en la fila superior)
       if (normalizar(f) === normalizar('Fondo General')) return;
+            // Saltar Fondo General (ya está en la fila superior)
+      if (normalizar(f) === normalizar('Fondo General')) return;
+      // Saltar Fondo Pastor (ya está en la fila superior)
+      if (normalizar(f) === normalizar('Fondo Pastor')) return;
       
       var s = saldoFondo(db, f);
       totalFondos += s;
@@ -1109,10 +1123,11 @@ function renderPanel() {
       grid.appendChild(card);
     });
 
-       // Tarjeta de TOTAL GENERAL (incluye Fondo General)
+          // Tarjeta de TOTAL GENERAL (incluye Fondo General y Fondo Pastor)
     if (!esComite()) {
       var saldoFG = saldoFondo(db, 'Fondo General');
-      var granTotal = totalFondos + saldoFG;
+      var saldoFP = saldoFondo(db, 'Fondo Pastor');
+      var granTotal = totalFondos + saldoFG + saldoFP;
       var cTot = document.createElement('div');
       cTot.className = 'fondo-card';
       cTot.style.borderTopColor = '#f39c12';
