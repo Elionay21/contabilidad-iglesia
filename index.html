@@ -377,9 +377,10 @@ var DURACION_EDICION_MS = 2 * 60 * 60 * 1000;
 var session = null;
 
 var FONDOS_DEFECTO = [
-  'Diaconos','Misiones','Damas','Evangelismo','Jóvenes','Obra Social',
+  'Diáconos','Misiones','Damas','Evangelismo','Jóvenes','Obra Social',
   'Escuela Dominical','Alabanza','Caballeros','Audiovisuales','Piso Iglesia',
-  'Interseccion','Nueva Obra','Sonido','Diezmos','Fondo General'
+  'Intersección','Nueva Obra','Sonido','Diezmos','Fondo General',
+  'DEDUCCIONES 10%','NIVELACION','LOCAL 5%','ASOCIACION'
 ];
 
 /* Firebase */
@@ -943,20 +944,40 @@ function cerrarMes() {
     tipo: 'ingreso', monto: t.bruto, usuario: session.user,
     creadoEn: new Date().toISOString()
   });
-  var egresos = [
-    { concepto: 'Diezmo de Diezmos ' + prefijo, monto: t.dd },
-    { concepto: 'Asomipel ' + prefijo, monto: t.asomipel },
-    { concepto: 'Fondo Nacional ' + prefijo, monto: t.nac },
-    { concepto: 'Fondo Local ' + prefijo, monto: t.loc },
-    { concepto: 'Neto Pastor ' + prefijo, monto: t.neto }
+    // Transferencias a los fondos correspondientes
+  var transferencias = [
+    { fondoDestino: 'DEDUCCIONES 10%', concepto: 'Diezmo de Diezmos ' + prefijo, monto: t.dd },
+    { fondoDestino: 'ASOCIACION',      concepto: 'Asomipel ' + prefijo,          monto: t.asomipel },
+    { fondoDestino: 'NIVELACION',      concepto: 'Fondo Nacional ' + prefijo,    monto: t.nac },
+    { fondoDestino: 'LOCAL 5%',        concepto: 'Fondo Local ' + prefijo,       monto: t.loc }
   ];
-  egresos.forEach(function(e){
+  
+  transferencias.forEach(function(e){
     if (e.monto <= 0) return;
+    
+    // 1) Egreso del fondo Diezmos
     db.libro.push({
       id: Date.now() + Math.random() + Math.random(),
       numero: generarReciboNum(db),
-      fecha: fechaCierre, fondo: 'Diezmos',
-      concepto: e.concepto, tipo: 'egreso', monto: e.monto, usuario: session.user,
+      fecha: fechaCierre,
+      fondo: 'Diezmos',
+      concepto: 'Transferencia a ' + e.fondoDestino + ' - ' + prefijo,
+      tipo: 'egreso',
+      monto: e.monto,
+      usuario: session.user,
+      creadoEn: new Date().toISOString()
+    });
+    
+    // 2) Ingreso al fondo destino
+    db.libro.push({
+      id: Date.now() + Math.random() + Math.random(),
+      numero: generarReciboNum(db),
+      fecha: fechaCierre,
+      fondo: e.fondoDestino,
+      concepto: e.concepto,
+      tipo: 'ingreso',
+      monto: e.monto,
+      usuario: session.user,
       creadoEn: new Date().toISOString()
     });
   });
