@@ -803,8 +803,11 @@ function renderLibro() {
     if (fondoFiltro && normalizar(m.fondo) !== normalizar(fondoFiltro)) return false;
     if (tipoFiltro && m.tipo !== tipoFiltro) return false;
     return true;
-  }).forEach(function(m){
-    if (m.tipo === 'ingreso') ing += m.monto; else egr += m.monto;
+    }).forEach(function(m){
+    // Solo sumar a los totales si coincide con el filtro de fondo (si hay uno seleccionado)
+    if (!fondoFiltro || normalizar(m.fondo) === normalizar(fondoFiltro)) {
+      if (m.tipo === 'ingreso') ing += m.monto; else egr += m.monto;
+    }
     var tr = document.createElement('tr');
     tr.innerHTML = '<td>' + m.numero + '</td><td>' + m.fecha + '</td><td>' + m.fondo + '</td>' +
       '<td>' + m.concepto + '</td>' +
